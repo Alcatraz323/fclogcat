@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:layout_width="match_parent">
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="left|center">
+
+		<ImageView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:src="@drawable/ic_file"
+			android:layout_marginLeft="16dp"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:layout_width="wrap_content"
+			android:layout_marginLeft="16dp"
+			android:id="@+id/drawerchilditemTextView1"/>
+
+		<LinearLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:gravity="right">
+
+			<ImageButton
+				style="?android:attr/buttonBarButtonStyle"
+				android:layout_height="46dp"
+				android:layout_width="40dp"
+				android:src="@drawable/ic_pulse"
+				android:id="@+id/drawerchilditemImageButton1"
+				android:scaleType="centerInside"/>
+
+			<ImageButton
+				style="?android:attr/buttonBarButtonStyle"
+				android:layout_height="46dp"
+				android:layout_width="40dp"
+				android:src="@drawable/ic_send"
+				android:id="@+id/drawerchilditemImageButton2"
+				android:scaleType="centerInside"/>
+
+			<ImageButton
+				style="?android:attr/buttonBarButtonStyle"
+				android:layout_height="46dp"
+				android:layout_width="40dp"
+				android:src="@drawable/ic_delete"
+				android:id="@+id/drawerchilditemImageButton3"
+				android:scaleType="centerInside"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</FrameLayout>
+

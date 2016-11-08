@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="default_colorPrimary">#3f51b5</color>
+	<color name="nightmode_colorPrimary">#3C3C3C</color>
+	<color name="pink_colorPrimary">#e91e63</color>
+	<color name="green_colorPrimary">#4caf50</color>
+	<color name="yellow_colorPrimary">#ffeb3b</color>
+	<color name="addedblue_colorPrimary">#66ccff</color>
+	<color name="umr_colorPrimary">#ff6600</color>
+</resources>

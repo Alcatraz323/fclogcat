@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="@android:style/Theme.Holo.Light">
+	<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+		<item name="colorPrimary">#3f51b5</item>
+		<item name="colorAccent">#3f51b5</item>
+		<item name="windowActionModeOverlay">true</item>
+	</style>
+	<style name="Night" parent="Theme.AppCompat"/>
+	<style name="CustomActionMode" parent="Widget.AppCompat.ActionMode">
+		<item name="background">@color/default_colorPrimary</item>
+		<item name="height">64dp</item>
 	</style>
 </resources>

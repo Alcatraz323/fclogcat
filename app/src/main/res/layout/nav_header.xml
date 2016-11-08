@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="192dp"
+	android:layout_width="match_parent">
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="vertical"
+		android:id="@+id/navheaderLinearLayout2">
+
+		<ImageView
+			android:focusable="true"
+			android:clickable="true"
+			android:foreground="?android:attr/selectableItemBackground"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:src="@drawable/image_1"
+			android:scaleType="centerCrop"
+			android:id="@+id/navheaderImageView1"
+			android:paddingBottom="5dp"
+			android:background="@drawable/shader">
+
+		</ImageView>
+
+	</LinearLayout>
+
+	<RelativeLayout
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:gravity="bottom">
+
+		<LinearLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal">
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:orientation="vertical"
+				android:gravity="bottom"
+				android:id="@+id/navheaderLinearLayout1">
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:layout_width="wrap_content"
+					android:text="@string/app_name"
+					android:textColor="#FFFFFF"
+					android:paddingLeft="26dp"
+					android:id="@+id/navheaderTextView2"/>
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceSmall"
+					android:layout_width="wrap_content"
+					android:textColor="#FFFFFF"
+					android:paddingBottom="23dp"
+					android:paddingLeft="26dp"
+					android:id="@+id/navheaderTextView1"
+					android:text="@string/author"/>
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</RelativeLayout>
+
+</FrameLayout>
+
