@@ -1,4 +1,4 @@
-package com.ryuunoakaihitomi.ForceCloset;
+package com.alcatraz.fclogcat;
 import android.app.*;
 import android.content.*;
 import android.view.*;

@@ -1,4 +1,4 @@
-package com.ryuunoakaihitomi.ForceCloset;
+package com.alcatraz.fclogcat;
 
 import android.app.*;
 import android.os.*;
@@ -15,77 +15,42 @@ import java.io.*;
 import android.widget.AbsListView.*;
 import android.content.*;
 import android.net.*;
+import android.content.pm.*;
+import android.content.pm.PackageManager.*;
 
 public class MainActivity extends AppCompatActivity 
 {
+	public static String ACTION_TAG="LogCatService";
 	List<String> parent = null;
 	Map<String, List<String>> map = null;
 	android.support.v7.widget.Toolbar tb;
 	DrawerLayout dl;
 	View padding;
 	ListView lv;
+	SwipeRefreshLayout srl;
 	LinkedList<String> data=new LinkedList<String>();
+	List<String> card_data_key=null;
 	ListViewAdapter lva;
 	ExpandableListView elv;
 	ExpandableAdapter file_adp;
+	Map<String,List<String>> card_data=null;
 	Map<Integer,String> selected=new HashMap<Integer,String>();
 	/*____输出参数______*/
 	String file_buffer;
 	boolean record=false;
 	String time_file;
+	ListCardAdapter lca;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 		initData();
+		init_main_card_list();
 		initViews();
-
-		LogCat l=new LogCat("logcat -v threadtime",LogCat.start_flag_require_root,getPackageCodePath());
-		l.readLogCat(new LogCat.LogCatInterface(){
-
-				@Override
-				public void onUpdate(final String p1)
-				{
-					runOnUiThread(new Runnable(){
-
-							@Override
-							public void run()
-							{
-								if(LogCatAnalyser.isCrash(p1)){//是否来自AndroidRuntime E等级
-									if(record){//记录
-										file_buffer=file_buffer+p1+"\n";
-									}
-									if(LogCatAnalyser.isCrashStart(p1)){//开始记录调用
-										file_buffer=p1+"\n";
-										record=true;
-										time_file=LogCatAnalyser.getTime(p1);
-									}
-									
-									if(data.size()==128){//显示条数
-										data.removeFirst();
-										data.add(p1);
-										lva.notifyDataSetChanged();
-									}else{
-										data.add(p1);
-										lva.notifyDataSetChanged();
-									}
-								}else{
-									//结束单次错误，并以日期形式输出
-									record=false;
-									if(file_buffer!=null){
-										output(file_buffer,time_file);
-										file_buffer=null;
-										time_file=null;
-									}
-								}
-
-								// TODO: Implement this method
-							}
-						});
-					// TODO: Implement this method
-				}
-			});
+		if(!isServiceRunning()){
+			startService(new Intent(this,BackGroundCatcher.class));
+		}
     }
 
 	@Override
@@ -96,7 +61,7 @@ public class MainActivity extends AppCompatActivity
 		initData();//刷新后台抓取文件列表
 		file_adp.notifyDataSetChanged();
 	}
-	
+
 	public void initViews()
 	{
 		tb=(android.support.v7.widget.Toolbar) findViewById(R.id.mainToolbar1);
@@ -104,14 +69,29 @@ public class MainActivity extends AppCompatActivity
 		elv=(ExpandableListView) findViewById(R.id.drawerfileExpandableListView1);
 		lv=(ListView) findViewById(R.id.mainListView1);
 		lva=new ListViewAdapter(this,data,lv);
-		lv.setAdapter(lva);
-		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-		lv.setMultiChoiceModeListener(new MultiChoiceModeListener(){
+		lca=new ListCardAdapter(this,card_data,card_data_key);
+		lv.setAdapter(lca);
+		srl=(SwipeRefreshLayout) findViewById(R.id.drawerfileSwipeRefreshLayout1);
+		srl.setColorSchemeResources(R.color.default_colorPrimary);
+		srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+
+				@Override
+				public void onRefresh()
+				{
+					initData();
+					srl.setRefreshing(false);
+					file_adp.notifyDataSetChanged();
+					// TODO: Implement this method
+				}
+			});
+		//lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		/*lv.setMultiChoiceModeListener(new MultiChoiceModeListener(){
 
 				@Override
 				public boolean onCreateActionMode(ActionMode p1, Menu p2)
 				{
 					// TODO: Implement this method
+
 					p1.getMenuInflater().inflate(R.menu.action_mode,p2);
 					return true;
 				}
@@ -135,17 +115,17 @@ public class MainActivity extends AppCompatActivity
 					switch(p2.getItemId()){
 						case R.id.act_item1:
 							if(selected!=null){
-							String t="";
-							for(int i=0;i<data.size();i++){
-								if(selected.containsKey(i)){
-									t=t+selected.get(i).toString()+"\n";
+								String t="";
+								for(int i=0;i<data.size();i++){
+									if(selected.containsKey(i)){
+										t=t+selected.get(i).toString()+"\n";
+									}
 								}
-							}
-							copy(t,MainActivity.this);
-							selected.clear();
+								copy(t,MainActivity.this);
+								selected.clear();
 							}
 							break;
-							case R.id.act_item2:
+						case R.id.act_item2:
 							if(selected!=null){
 								String t="";
 								for(int i=0;i<data.size();i++){
@@ -158,18 +138,18 @@ public class MainActivity extends AppCompatActivity
 								i.putExtra(Intent.EXTRA_TEXT,t);
 								startActivity(i);
 								selected.clear();
-								}
-								break;
+							}
+							break;
 					}
 					lv.clearChoices();
 					p1.finish();
 					// TODO: Implement this method
 					return true;
 				}
-
 				@Override
 				public void onDestroyActionMode(ActionMode p1)
 				{
+					selected.clear();
 					// TODO: Implement this method
 				}
 
@@ -177,7 +157,7 @@ public class MainActivity extends AppCompatActivity
 				public void onItemCheckedStateChanged(ActionMode p1, int p2, long p3, boolean p4)
 				{
 					if(p4){
-					selected.put(p2,lv.getItemAtPosition(p2).toString());
+						selected.put(p2,lv.getItemAtPosition(p2).toString());
 					}else{
 						selected.remove(p2);
 					}
@@ -186,6 +166,7 @@ public class MainActivity extends AppCompatActivity
 					// TODO: Implement this method
 				}
 			});
+			*/
 		file_adp=new ExpandableAdapter(this,parent,map);
 		elv.setAdapter(file_adp);
 		padding=findViewById(R.id.mainView1);
@@ -201,46 +182,107 @@ public class MainActivity extends AppCompatActivity
 	public void initData()/*drawerlayout的文件列表加载*/
 	{
 		parent=new ArrayList<String>();
-		File dir=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/com.ryunnoakaihitomi.ForceCloset/");
+		File dir=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/com.alcatraz.fclogcat/");
 		File[] dirs=dir.listFiles();
 		if(dirs!=null){
-		for(File i:dirs){
-			parent.add(i.getName());
-		}
-		map=new HashMap<String,List<String>>();
-		for(String h:parent){
-			File inner=new File(dir.getPath()+"/"+h+"/");
-			List<String> temp=new ArrayList<String>();
-			File[] temp2=inner.listFiles();
-			if(temp2!=null){
-			for(File t:temp2){
-				temp.add(t.getName());
+			for(File i:dirs){
+				parent.add(i.getName());
 			}
-			map.put(h,temp);
+			map=new HashMap<String,List<String>>();
+			for(String h:parent){
+				File inner=new File(dir.getPath()+"/"+h+"/");
+				List<String> temp=new ArrayList<String>();
+				File[] temp2=inner.listFiles();
+				if(temp2!=null){
+					for(File t:temp2){
+						temp.add(t.getName());
+
+					}
+					map.put(h,temp);
+				}
 			}
-		}
+
+
 		}
 	}
-	public void output(String content,String time){
+	public void init_main_card_list()
+	{
+		card_data_key=new ArrayList<String>();
+		card_data=new HashMap<String,List<String>>();
+		File dir=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/com.alcatraz.fclogcat/");
+		File[] dirs=dir.listFiles();
+		if(dirs!=null){
+			for(String h:parent){
+				File inner=new File(dir.getPath()+"/"+h+"/");
+				File[] temp2=inner.listFiles();
+				if(temp2!=null){
+					for(File t:temp2){
+						String[] pkg_t=t.getName().split(" ")[2].split("\\.");
+						String pkg="";
+						int k=0;
+						for(String n:pkg_t){
+							if(n.equals(pkg_t[pkg_t.length-1])){
+								break;
+							}
+							if(k!=0){
+							pkg=pkg+"."+n;
+							}else{
+							pkg=pkg+n;
+							}
+							k++;
+						}
+						if(!card_data_key.contains(pkg)){
+							card_data_key.add(pkg);
+							List<String> temp=new ArrayList<String>();
+							temp.add(t.getName());
+							card_data.put(pkg,temp);
+						}else{
+							card_data.get(pkg).add(t.getName());
+						}
+					}
+				}
+			}
+		}
+	}
+	@Override
+	protected void onDestroy()
+	{
+		// TODO: Implement this method
+		super.onDestroy();
+
+	}
+	public boolean isServiceRunning()
+	{
+	    ActivityManager manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+	    for(ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+	        if((getPackageName()+".BackGroundCatcher").equals(service.service.getClassName())){
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	public void output(String content, String time)
+	{
 		/*根据日期输出，你可以写你要的输出*/
-		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss"); 
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 		Date curDate = new Date(System.currentTimeMillis());
 		String str = formatter.format(curDate);
-		File root=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/com.ryunnoakaihitomi.ForceCloset/");
+		File root=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/com.alcatraz.fclogcat/");
 		File data_dir=new File(root.getPath()+"/"+str.split(" ")[0]+"/");
 		data_dir.mkdirs();
 		File data_file=new File(data_dir.getPath()+"/"+time+".log");
 		if(!data_file.exists()){
-		try{
-			data_file.createNewFile();
-			FileOutputStream fos=new FileOutputStream(data_file);
-			fos.write(content.getBytes());
-			fos.close();
-		}catch(IOException e){}
+			try{
+				data_file.createNewFile();
+				FileOutputStream fos=new FileOutputStream(data_file);
+				fos.write(content.getBytes());
+				fos.close();
+			}catch(IOException e){}
 		}else{
-			
+
 		}
 		initData();
 		file_adp.notifyDataSetChanged();
 	}
+
 }

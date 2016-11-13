@@ -17,11 +17,12 @@
 			android:layout_marginLeft="16dp"/>
 
 		<TextView
-			android:layout_height="wrap_content"
+			android:singleLine="true"
+			android:layout_height="match_parent"
 			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:layout_width="wrap_content"
-			android:layout_marginLeft="16dp"
-			android:id="@+id/drawerchilditemTextView1"/>
+			android:layout_width="100dp"
+			android:id="@+id/drawerchilditemTextView1"
+			android:gravity="center"/>
 
 		<LinearLayout
 			android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.ryuunoakaihitomi.ForceCloset;
+package com.alcatraz.fclogcat;
 import android.util.*;
 
 public class LogCatAnalyser
@@ -37,6 +37,12 @@ public class LogCatAnalyser
 		}
 
 		return "V";
+	}
+	public static String getPackage(String line){
+		String process=line.replace(" ","");
+		String[] process_1=process.split(":");
+		String[] process_2=process_1[4].split(",");
+		return process_2[0];
 	}
 	public static String getSource(String line, String priority)
 	{
@@ -85,8 +91,6 @@ public class LogCatAnalyser
 			String process=line.replace(" ","");
 			String[] t=process.split(":",4);
 			if(t[3].indexOf("FATAL")>=0){
-				
-				
 				return true;
 			}
 		}catch(Exception e){
