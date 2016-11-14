@@ -21,19 +21,20 @@ import android.content.pm.PackageManager.*;
 public class MainActivity extends AppCompatActivity 
 {
 	public static String ACTION_TAG="LogCatService";
-	List<String> parent = null;
-	Map<String, List<String>> map = null;
+	List<String> parent = new ArrayList<String>();;
+	Map<String, List<String>> map = new HashMap<String,List<String>>();
 	android.support.v7.widget.Toolbar tb;
 	DrawerLayout dl;
 	View padding;
 	ListView lv;
+	innerRec rec=new innerRec();
 	SwipeRefreshLayout srl;
 	LinkedList<String> data=new LinkedList<String>();
-	List<String> card_data_key=null;
+	List<String> card_data_key=new ArrayList<String>();;
 	ListViewAdapter lva;
 	ExpandableListView elv;
 	ExpandableAdapter file_adp;
-	Map<String,List<String>> card_data=null;
+	Map<String,List<String>> card_data=new HashMap<String,List<String>>();
 	Map<Integer,String> selected=new HashMap<Integer,String>();
 	/*____输出参数______*/
 	String file_buffer;
@@ -48,9 +49,11 @@ public class MainActivity extends AppCompatActivity
 		initData();
 		init_main_card_list();
 		initViews();
+		regist();
 		if(!isServiceRunning()){
 			startService(new Intent(this,BackGroundCatcher.class));
 		}
+		
     }
 
 	@Override
@@ -58,8 +61,7 @@ public class MainActivity extends AppCompatActivity
 	{
 		// TODO: Implement this method
 		super.onResume();
-		initData();//刷新后台抓取文件列表
-		file_adp.notifyDataSetChanged();
+		ref();
 	}
 
 	public void initViews()
@@ -78,101 +80,23 @@ public class MainActivity extends AppCompatActivity
 				@Override
 				public void onRefresh()
 				{
-					initData();
+					ref();
 					srl.setRefreshing(false);
-					file_adp.notifyDataSetChanged();
 					// TODO: Implement this method
 				}
 			});
-		//lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-		/*lv.setMultiChoiceModeListener(new MultiChoiceModeListener(){
-
-				@Override
-				public boolean onCreateActionMode(ActionMode p1, Menu p2)
-				{
-					// TODO: Implement this method
-
-					p1.getMenuInflater().inflate(R.menu.action_mode,p2);
-					return true;
-				}
-
-				@Override
-				public boolean onPrepareActionMode(ActionMode p1, Menu p2)
-				{
-					// TODO: Implement this method
-					return true;
-				}
-				public void copy(String content, Context context)  
-				{  
-
-					ClipboardManager cmb = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);  
-					cmb.setText(content.trim());  
-				}  
-				@Override
-				public boolean onActionItemClicked(ActionMode p1, MenuItem p2)
-				{
-					//ActionMode动作
-					switch(p2.getItemId()){
-						case R.id.act_item1:
-							if(selected!=null){
-								String t="";
-								for(int i=0;i<data.size();i++){
-									if(selected.containsKey(i)){
-										t=t+selected.get(i).toString()+"\n";
-									}
-								}
-								copy(t,MainActivity.this);
-								selected.clear();
-							}
-							break;
-						case R.id.act_item2:
-							if(selected!=null){
-								String t="";
-								for(int i=0;i<data.size();i++){
-									if(selected.containsKey(i)){
-										t=t+selected.get(i).toString()+"\n";
-									}
-								}
-								Intent i=new Intent(Intent.ACTION_SEND);
-								i.setType("text/plain");
-								i.putExtra(Intent.EXTRA_TEXT,t);
-								startActivity(i);
-								selected.clear();
-							}
-							break;
-					}
-					lv.clearChoices();
-					p1.finish();
-					// TODO: Implement this method
-					return true;
-				}
-				@Override
-				public void onDestroyActionMode(ActionMode p1)
-				{
-					selected.clear();
-					// TODO: Implement this method
-				}
-
-				@Override
-				public void onItemCheckedStateChanged(ActionMode p1, int p2, long p3, boolean p4)
-				{
-					if(p4){
-						selected.put(p2,lv.getItemAtPosition(p2).toString());
-					}else{
-						selected.remove(p2);
-					}
-					p1.setTitle("选择了"+selected.size()+"项");
-					lva.notifyDataSetChanged();
-					// TODO: Implement this method
-				}
-			});
-			*/
+		
 		file_adp=new ExpandableAdapter(this,parent,map);
 		elv.setAdapter(file_adp);
 		padding=findViewById(R.id.mainView1);
 		immersive();
 	}
-
+	public void ref(){
+		initData();
+		init_main_card_list();
+		file_adp.notifyDataSetChanged();
+		lca.notifyDataSetChanged();
+	}
 	private void immersive()
 	{
 		setSupportActionBar(tb);
@@ -181,14 +105,14 @@ public class MainActivity extends AppCompatActivity
 	}
 	public void initData()/*drawerlayout的文件列表加载*/
 	{
-		parent=new ArrayList<String>();
+		parent.clear();
 		File dir=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/com.alcatraz.fclogcat/");
 		File[] dirs=dir.listFiles();
 		if(dirs!=null){
 			for(File i:dirs){
 				parent.add(i.getName());
 			}
-			map=new HashMap<String,List<String>>();
+			map.clear();
 			for(String h:parent){
 				File inner=new File(dir.getPath()+"/"+h+"/");
 				List<String> temp=new ArrayList<String>();
@@ -205,10 +129,11 @@ public class MainActivity extends AppCompatActivity
 
 		}
 	}
+	
 	public void init_main_card_list()
 	{
-		card_data_key=new ArrayList<String>();
-		card_data=new HashMap<String,List<String>>();
+		card_data_key.clear();
+		card_data.clear();
 		File dir=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/com.alcatraz.fclogcat/");
 		File[] dirs=dir.listFiles();
 		if(dirs!=null){
@@ -249,7 +174,12 @@ public class MainActivity extends AppCompatActivity
 	{
 		// TODO: Implement this method
 		super.onDestroy();
-
+		unregisterReceiver(rec);
+	}
+	public void regist(){
+		IntentFilter ifil=new IntentFilter();
+		ifil.addAction(ACTION_TAG);
+		registerReceiver(rec,ifil);
 	}
 	public boolean isServiceRunning()
 	{
@@ -284,5 +214,13 @@ public class MainActivity extends AppCompatActivity
 		initData();
 		file_adp.notifyDataSetChanged();
 	}
-
+	class innerRec extends BroadcastReceiver
+	{
+		@Override
+		public void onReceive(Context p1, Intent p2)
+		{
+			ref();
+			// TODO: Implement this method
+		}
+	}
 }

@@ -9,6 +9,8 @@ import java.io.*;
 import java.util.*;
 import android.graphics.*;
 import android.widget.*;
+import android.content.pm.*;
+import android.graphics.drawable.*;
 
 public class BackGroundCatcher extends Service
 {
@@ -81,8 +83,8 @@ public class BackGroundCatcher extends Service
 	public void notification(String dir){
 		if(dir!=null){
 		NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		Intent i=new Intent(this, MainActivity.class);
-		i.putExtra("dir",dir);
+		Intent i=new Intent(this, LogViewer.class);
+		i.putExtras(getNotiData(dir));
 		PendingIntent pendingIntent = PendingIntent.getActivity(this,0,i,0);
 			Notification.Builder nb=new Notification.Builder(this)
 			.setContentIntent(pendingIntent)
@@ -120,11 +122,48 @@ public class BackGroundCatcher extends Service
 				FileOutputStream fos=new FileOutputStream(data_file);
 				fos.write(content.getBytes());
 				fos.close();
+				sendBroadcast(new Intent(MainActivity.ACTION_TAG));
 				return data_file.getPath();
 			}catch(IOException e){}
 		}else{
 
 		}
 		return null;
+	}
+	public Bundle getNotiData(String dir){
+		File f=new File(dir);
+		String file_name=f.getName();
+		Bundle data=new Bundle();
+		data.putString("path",dir);
+		data.putString("pkg",getPkg(file_name));
+		data.putString("label",getLabel(getPkg(file_name)));
+		return data;
+	}
+	public String getPkg(String file_name){
+		String[] pkg_t=file_name.split(" ")[2].split("\\.");
+		String pkg="";
+		int k=0;
+		for(String n:pkg_t){
+			if(n.equals(pkg_t[pkg_t.length-1])){
+				break;
+			}
+			if(k!=0){
+				pkg=pkg+"."+n;
+			}else{
+				pkg=pkg+n;
+			}
+			k++;
+		}
+		return pkg;
+	}
+	
+	public String getLabel(String pkg){
+		PackageManager pm=getPackageManager();
+		try{
+			ApplicationInfo ai=pm.getApplicationInfo(pkg,PackageManager.GET_META_DATA);
+			return pm.getApplicationLabel(ai).toString();
+		}catch(PackageManager.NameNotFoundException e){
+			return null;
+		}
 	}
 }

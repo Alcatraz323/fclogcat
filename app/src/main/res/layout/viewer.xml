@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+
+	<android.support.v7.widget.Toolbar
+		android:background="#3f51b5"
+		android:layout_width="match_parent"
+		android:theme="@style/Night"
+		android:layout_height="?attr/actionBarSize"
+		android:id="@+id/viewerToolbar1">
+
+	</android.support.v7.widget.Toolbar>
+	<include
+		layout="@layout/viewer_content"/>
+</LinearLayout>
+
