@@ -1,22 +1,21 @@
 package com.alcatraz.fclogcat;
 
+import android.annotation.*;
 import android.app.*;
-import android.os.*;
-import android.support.v7.app.*;
-import android.support.v4.widget.*;
-import android.view.*;
-import com.alcatraz.support.v4.appcompat.*;
-import android.widget.*;
-import java.util.*;
-import com.alcatraz.support.implutil.*;
-import android.util.*;
-import java.text.*;
-import java.io.*;
-import android.widget.AbsListView.*;
 import android.content.*;
+import android.graphics.*;
+import android.os.*;
+import android.support.v4.widget.*;
+import android.support.v7.app.*;
+import android.view.*;
+import android.widget.*;
+import java.io.*;
+import java.text.*;
+import java.util.*;
+import com.alcatraz.support.v4.appcompat.*;
+import android.support.design.widget.*;
+import android.view.View.*;
 import android.net.*;
-import android.content.pm.*;
-import android.content.pm.PackageManager.*;
 
 public class MainActivity extends AppCompatActivity 
 {
@@ -25,9 +24,13 @@ public class MainActivity extends AppCompatActivity
 	Map<String, List<String>> map = new HashMap<String,List<String>>();
 	android.support.v7.widget.Toolbar tb;
 	DrawerLayout dl;
-	View padding;
 	ListView lv;
+	ImageButton imgb;
+	LinearLayout emp_1;
+	LinearLayout emp_2;
 	innerRec rec=new innerRec();
+	AppBarLayout abl;
+	View v;
 	SwipeRefreshLayout srl;
 	LinkedList<String> data=new LinkedList<String>();
 	List<String> card_data_key=new ArrayList<String>();;
@@ -71,8 +74,22 @@ public class MainActivity extends AppCompatActivity
 		elv=(ExpandableListView) findViewById(R.id.drawerfileExpandableListView1);
 		lv=(ListView) findViewById(R.id.mainListView1);
 		lva=new ListViewAdapter(this,data,lv);
+		abl=(AppBarLayout) findViewById(R.id.mainAppBarLayout1);
 		lca=new ListCardAdapter(this,card_data,card_data_key);
 		lv.setAdapter(lca);
+		emp_1=(LinearLayout) findViewById(R.id.mainLinearLayout1);
+		emp_2=(LinearLayout) findViewById(R.id.emptyviewLinearLayout1);
+		imgb=(ImageButton) findViewById(R.id.navheaderImageButton1);
+		imgb.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://github.com/Alcatraz323")));
+					// TODO: Implement this method
+				}
+			});
+		v=findViewById(R.id.mainView1);
 		srl=(SwipeRefreshLayout) findViewById(R.id.drawerfileSwipeRefreshLayout1);
 		srl.setColorSchemeResources(R.color.default_colorPrimary);
 		srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
@@ -88,21 +105,23 @@ public class MainActivity extends AppCompatActivity
 		
 		file_adp=new ExpandableAdapter(this,parent,map);
 		elv.setAdapter(file_adp);
-		padding=findViewById(R.id.mainView1);
-		immersive();
+		setSupportActionBar(tb);
+		new DrawerLayoutUtil().setImmersiveToolbarWithDrawer(tb,dl,this,v,"#3f51b5",Build.VERSION.SDK_INT);
 	}
 	public void ref(){
 		initData();
 		init_main_card_list();
+		if(map.size()==0||card_data.size()==0){
+			emp_1.setVisibility(View.VISIBLE);
+			emp_2.setVisibility(View.VISIBLE);
+		}else{
+			emp_1.setVisibility(View.GONE);
+			emp_2.setVisibility(View.GONE);
+		}
 		file_adp.notifyDataSetChanged();
 		lca.notifyDataSetChanged();
 	}
-	private void immersive()
-	{
-		setSupportActionBar(tb);
-		new DrawerLayoutUtil().setImmersiveToolbarWithDrawer(tb,dl,MainActivity.this,padding,"#3f51b5",Build.VERSION.SDK_INT);
-		/*已进行SDK是否大于等于19判断*/
-	}
+	
 	public void initData()/*drawerlayout的文件列表加载*/
 	{
 		parent.clear();

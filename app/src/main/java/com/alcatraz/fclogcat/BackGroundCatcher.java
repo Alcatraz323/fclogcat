@@ -11,13 +11,16 @@ import android.graphics.*;
 import android.widget.*;
 import android.content.pm.*;
 import android.graphics.drawable.*;
+import android.view.*;
 
 public class BackGroundCatcher extends Service
 {
+	public static String NO_ROOT_TAG="noroot";
 	boolean record=false;
 	String file_buffer="";
 	String time_file;
 	String packagen;
+	Noroottagrec nrc;
 	boolean packageget=false;
 	int id=0;
 	@Override
@@ -40,6 +43,7 @@ public class BackGroundCatcher extends Service
 	{
 		// TODO: Implement this method
 		super.onStart(intent,startId);
+		regist();
 		LogCat l=new LogCat("logcat -v threadtime",LogCat.start_flag_require_root,getPackageCodePath());
 		l.readLogCat(new LogCat.LogCatInterface(){
 
@@ -78,12 +82,22 @@ public class BackGroundCatcher extends Service
 
 					// TODO: Implement this method
 				}
+			},new LogCat.RootChecker(){
+
+				@Override
+				public void onRequire(boolean p1)
+				{
+					if(!p1){
+						sendBroadcast(new Intent().setAction(NO_ROOT_TAG));
+					}
+					// TODO: Implement this method
+				}
 			});
 	}
 	public void notification(String dir){
 		if(dir!=null){
 		NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		Intent i=new Intent(this, LogViewer.class);
+		Intent i=new Intent(this, MainActivity.class);
 		i.putExtras(getNotiData(dir));
 		PendingIntent pendingIntent = PendingIntent.getActivity(this,0,i,0);
 			Notification.Builder nb=new Notification.Builder(this)
@@ -156,7 +170,20 @@ public class BackGroundCatcher extends Service
 		}
 		return pkg;
 	}
-	
+
+	@Override
+	public void onDestroy()
+	{
+		// TODO: Implement this method
+		unregisterReceiver(nrc);
+		super.onDestroy();
+	}
+	public void regist(){
+		nrc=new Noroottagrec();
+		IntentFilter ifil=new IntentFilter();
+		ifil.addAction(NO_ROOT_TAG);
+		registerReceiver(nrc,ifil);
+	}
 	public String getLabel(String pkg){
 		PackageManager pm=getPackageManager();
 		try{
@@ -165,5 +192,32 @@ public class BackGroundCatcher extends Service
 		}catch(PackageManager.NameNotFoundException e){
 			return null;
 		}
+	}
+	class Noroottagrec extends BroadcastReceiver
+	{
+
+		@Override
+		public void onReceive(Context p1, Intent p2)
+		{
+			android.app.AlertDialog a=new android.app.AlertDialog.Builder(BackGroundCatcher.this)
+				.setTitle("无Root权限")
+				.setMessage("请注意在无root状态LogCat读取无法工作")
+				.setPositiveButton("明白",new DialogInterface.OnClickListener(){
+
+					@Override
+					public void onClick(DialogInterface p1, int p2)
+					{
+						stopSelf();
+						android.os.Process.killProcess(android.os.Process.myPid());
+						// TODO: Implement this method
+					}
+				})
+				.create();
+			a.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+			a.show();
+			// TODO: Implement this method
+		}
+		
+		
 	}
 }

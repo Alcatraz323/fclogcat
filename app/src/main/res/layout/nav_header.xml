@@ -51,15 +51,30 @@
 					android:paddingLeft="26dp"
 					android:id="@+id/navheaderTextView2"/>
 
-				<TextView
+				<LinearLayout
 					android:layout_height="wrap_content"
-					android:textAppearance="?android:attr/textAppearanceSmall"
 					android:layout_width="wrap_content"
-					android:textColor="#FFFFFF"
-					android:paddingBottom="23dp"
-					android:paddingLeft="26dp"
-					android:id="@+id/navheaderTextView1"
-					android:text="@string/author"/>
+					android:orientation="horizontal">
+
+					<TextView
+						android:layout_height="wrap_content"
+						android:textAppearance="?android:attr/textAppearanceSmall"
+						android:layout_width="wrap_content"
+						android:textColor="#FFFFFF"
+						android:paddingBottom="23dp"
+						android:paddingLeft="26dp"
+						android:id="@+id/navheaderTextView1"
+						android:text="@string/author"/>
+
+					<ImageButton
+						style="?android:attr/buttonBarButtonStyle"
+						android:layout_width="38dp"
+						android:src="@drawable/ic_github"
+						android:id="@+id/navheaderImageButton1"
+						android:layout_height="38dp"
+						android:scaleType="centerCrop"/>
+
+				</LinearLayout>
 
 			</LinearLayout>
 

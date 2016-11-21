@@ -12,16 +12,25 @@ import com.alcatraz.support.v4.appcompat.*;
 import android.graphics.*;
 import java.io.*;
 import android.content.pm.*;
+import android.annotation.*;
+import android.app.*;
+import android.support.design.widget.*;
+import android.util.*;
 
 public class LogViewer extends AppCompatActivity
 {
 	android.support.v7.widget.Toolbar tb;
-	ListView lv;
-	TextView txv;
+	NoScrollListView lv;
+	TextView txv2;
+	TextView txv3;
+	ImageView imgv;
+	String exc;
 	ListViewAdapter lva;
+	AppBarLayout abl;
+	FloatingActionButton fab;
+	CollapsingToolbarLayout ctl;
 	Map<Integer,String> selected=new HashMap<Integer,String>();
 	List<String> data=new ArrayList<String>();
-
 	String pkg;
 	String label;
 	String path;
@@ -36,60 +45,106 @@ public class LogViewer extends AppCompatActivity
 		initData();
 		initViews();
 	}
+	
+	@TargetApi(Build.VERSION_CODES.KITKAT)
+    private void setTranslucentStatus(boolean on,Activity act) {
+        Window win = act.getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
+    }
+	protected void Immersive(android.support.v7.widget.Toolbar mToolbar,boolean immersive,Activity activity) {
+        int resourceId = activity.getResources().getIdentifier("status_bar_height", "dimen", "android");
+		int statusBarHeight = activity.getResources().getDimensionPixelSize(resourceId);
+		int paddingTop = mToolbar.getPaddingTop();
+		int paddingBottom = mToolbar.getPaddingBottom();
+		int paddingLeft = mToolbar.getPaddingLeft();
+		int paddingRight = mToolbar.getPaddingRight();
+		
+		ViewGroup.LayoutParams params = mToolbar.getLayoutParams();
+		int height = params.height;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			setTranslucentStatus(true,activity);
+			if (immersive) {
+				paddingTop += statusBarHeight;
+				height += statusBarHeight;
+			} else {
+				paddingTop -= statusBarHeight;
+				height -= statusBarHeight;
+			}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		// TODO: Implement this method
-		MenuInflater mi=new MenuInflater(this);
-		mi.inflate(R.menu.main_menu,menu);
-		return super.onCreateOptionsMenu(menu);
-	}
+            params.height = height;
+            mToolbar.setPadding(paddingLeft,0, paddingRight, paddingBottom);
+
+        }
+    }
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		// TODO: Implement this method
 		switch(item.getItemId()){
-			case R.id.item1:
-				android.support.v7.app.AlertDialog a=new android.support.v7.app.AlertDialog.Builder(this)
-					.setTitle("确认")
-					.setMessage("是否删除")
-					.setNegativeButton("否",null)
-					.setPositiveButton("是",new DialogInterface.OnClickListener(){
-
-						@Override
-						public void onClick(DialogInterface p1, int p2)
-						{
-							File f=new File(path);
-							f.delete();
-							finish();
-							// TODO: Implement this method
-						}
-					}).create();
-				new AlertDialogUtil().setSupportDialogColor(a,Color.parseColor("#3f51b5"));
-				a.show();
-				break;
+			
 			case android.R.id.home:
 				finish();
 				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	public int dpToPx(Context context,int dp) {
+	    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+	    int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));       
+	    return px;
+	}
 	public void initViews()
 	{
-		tb=(android.support.v7.widget.Toolbar) findViewById(R.id.viewerToolbar1);
-		StatusBarUtil.setColor(this,Color.parseColor("#3f51b5"));
+		tb=(android.support.v7.widget.Toolbar) findViewById(R.id.mytoolbar_1);
 		setSupportActionBar(tb);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		tb.setTitle(label);
-		tb.setLogo(icon);
-		txv=(TextView) findViewById(R.id.viewercontentTextView1);
-		txv.setText(path);
-		tb.setSubtitle(pkg);
-		lv=(ListView) findViewById(R.id.viewercontentListView1);
+		Immersive(tb,true,this);
+		abl=(AppBarLayout) findViewById(R.id.appbar);
+		ctl=(CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
+		ctl.setTitle(label);
+		ctl.setCollapsedTitleTextColor(Color.WHITE);
+		ctl.setExpandedTitleColor(Color.WHITE);
+		tb.getLayoutParams().height=dpToPx(this,56);
+		txv2=(TextView) findViewById(R.id.viewercontentTextView2);
+		txv3=(TextView) findViewById(R.id.viewercontentTextView3);
+		txv2.setText(txv2.getText().toString()+path);
+		txv3.setText(txv3.getText().toString()+exc);
+		fab=(FloatingActionButton) findViewById(R.id.fab);
+		fab.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					android.support.v7.app.AlertDialog a=new android.support.v7.app.AlertDialog.Builder(LogViewer.this)
+						.setTitle("确认")
+						.setMessage("是否删除")
+						.setNegativeButton("否",null)
+						.setPositiveButton("是",new DialogInterface.OnClickListener(){
+
+							@Override
+							public void onClick(DialogInterface p1, int p2)
+							{
+								File f=new File(path);
+								f.delete();
+								finish();
+								// TODO: Implement this method
+							}
+						}).create();
+					new AlertDialogUtil().setSupportDialogColor(a,Color.parseColor("#3f51b5"));
+					a.show();
+					// TODO: Implement this method
+				}
+			});
+		lv=(NoScrollListView) findViewById(R.id.viewercontentListView1);
 		lva=new ListViewAdapter(this,data,lv);
 		lv.setAdapter(lva);
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -183,8 +238,13 @@ public class LogViewer extends AppCompatActivity
 				InputStreamReader isr=new InputStreamReader(fis);
 				BufferedReader reader=new BufferedReader(isr);
 				String line;
+				int i=0;
 				while((line=reader.readLine())!=null){
 					data.add(line);
+					if(i==2){
+						exc=LogCatAnalyser.getException(line);
+					}
+					i++;
 				}
 				fis.close();
 			}

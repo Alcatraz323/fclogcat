@@ -9,6 +9,7 @@ import android.content.pm.PackageManager.*;
 import android.widget.AdapterView.*;
 import android.os.*;
 import java.io.*;
+import android.support.v7.widget.*;
 
 public class ListCardAdapter extends BaseAdapter
 {
@@ -53,6 +54,40 @@ public class ListCardAdapter extends BaseAdapter
 		ImageView imgv=(ImageView) p2.findViewById(R.id.listcardcontentImageView1);
 		TextView txv=(TextView) p2.findViewById(R.id.listcardcontentTextView1);
 		ListView lv=(ListView) p2.findViewById(R.id.listcardcontentListView1);
+		CardView cv=(CardView) p2.findViewById(R.id.listcardCardView1);
+		final LinearLayout ll=(LinearLayout) p2.findViewById(R.id.listcardLinearLayout1);
+		ll.setVisibility(View.GONE);
+		cv.setOnLongClickListener(new OnLongClickListener(){
+
+				@Override
+				public boolean onLongClick(View p1)
+				{
+					AnimateUtil.playstart(ll);
+					Button btn_1=(Button) ll.findViewById(R.id.listcardactionButton1);
+					Button btn_2=(Button) ll.findViewById(R.id.listcardactionButton2);
+					btn_1.setOnClickListener(new OnClickListener(){
+
+							@Override
+							public void onClick(View p1)
+							{
+								AnimateUtil.playEnd(ll);
+								// TODO: Implement this method
+							}
+						});
+					btn_2.setOnClickListener(new OnClickListener(){
+
+							@Override
+							public void onClick(View p1)
+							{
+								deleteAll(data.get(keys.get(id)));
+								ctx.sendBroadcast(new Intent().setAction(MainActivity.ACTION_TAG));
+								// TODO: Implement this method
+							}
+						});
+					// TODO: Implement this method
+					return false;
+				}
+			});
 		if(getIcon(keys.get(p1))!=null){
 			imgv.setImageDrawable(getIcon(keys.get(p1)));
 			txv.setText(getLabel(keys.get(p1)));
@@ -135,5 +170,30 @@ public class ListCardAdapter extends BaseAdapter
 			}
 		}
 		return null;
+	}
+	public void deleteAll(List<String> file){
+		File dir=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/com.alcatraz.fclogcat/");
+		File[] dirs=dir.listFiles();
+		List<String> parent=new ArrayList<String>();
+		if(dirs!=null){
+			for(File i:dirs){
+				parent.add(i.getName());
+			}
+			
+			for(String h:parent){
+				File inner=new File(dir.getPath()+"/"+h+"/");
+				File[] temp2=inner.listFiles();
+				if(temp2!=null){
+					for(File t:temp2){
+						for(String l:file){
+							if(t.getName().equals(l)){
+								t.delete();
+							}
+						}
+					}
+					
+				}
+			}
+			}
 	}
 }

@@ -65,6 +65,13 @@ public class LogCatAnalyser
 		}catch(Exception e){}
 		return false;
 	}
+	public static String getException(String line){
+		String process=line.replace(" ","");
+		String[] process_1=process.split("AndroidRuntime:");
+		String[] process_2=process_1[1].split(":");
+		String[] process_3=process_2[0].split("\\.");
+		return process_3[process_3.length-1];
+	}
 	public static String swi(String a)
 	{
 		switch(a){

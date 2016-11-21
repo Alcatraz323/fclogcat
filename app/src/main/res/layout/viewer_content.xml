@@ -3,33 +3,52 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:orientation="vertical">
+	android:orientation="vertical"
+	android:layout_marginLeft="48dp">
 
 	<LinearLayout
-		android:layout_height="64dp"
+		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
 		android:orientation="horizontal"
 		android:gravity="left|center">
 
 		<ImageView
-			android:layout_height="32dp"
-			android:layout_width="32dp"
-			android:src="@drawable/ic_folder"
-			android:layout_margin="16dp"/>
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_margin="16dp"
+			android:src="@drawable/ic_folder"/>
 
 		<TextView
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:layout_width="wrap_content"
-			android:id="@+id/viewercontentTextView1"/>
+			android:text="保存位置:"
+			android:id="@+id/viewercontentTextView2"
+			android:textColor="#FFFFFF"/>
 
 	</LinearLayout>
 
-	<ListView
-		android:divider="@null"
+	<LinearLayout
 		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:id="@+id/viewercontentListView1"/>
+		android:layout_width="match_parent"
+		android:orientation="horizontal"
+		android:gravity="left|center">
+
+		<ImageView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_margin="16dp"
+			android:src="@drawable/ic_bug"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:layout_width="wrap_content"
+			android:text="错误类型:"
+			android:id="@+id/viewercontentTextView3"
+			android:textColor="#FFFEFF"/>
+
+	</LinearLayout>
 
 </LinearLayout>
 

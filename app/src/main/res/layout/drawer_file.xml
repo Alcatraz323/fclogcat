@@ -8,18 +8,26 @@
 	<include
 		layout="@layout/nav_header"/>
 
-	<android.support.v4.widget.SwipeRefreshLayout
+	<FrameLayout
 		android:layout_height="match_parent"
-		android:layout_width="match_parent"
-		android:id="@+id/drawerfileSwipeRefreshLayout1">
+		android:layout_width="match_parent">
 
-		<ExpandableListView
-			android:divider="@null"
+		<android.support.v4.widget.SwipeRefreshLayout
 			android:layout_height="match_parent"
 			android:layout_width="match_parent"
-			android:id="@+id/drawerfileExpandableListView1"/>
+			android:id="@+id/drawerfileSwipeRefreshLayout1">
 
-	</android.support.v4.widget.SwipeRefreshLayout>
+			<ExpandableListView
+				android:divider="@null"
+				android:layout_height="match_parent"
+				android:layout_width="match_parent"
+				android:id="@+id/drawerfileExpandableListView1"/>
+
+		</android.support.v4.widget.SwipeRefreshLayout>
+
+		<include
+			layout="@layout/empty_view"/>
+	</FrameLayout>
 
 </LinearLayout>
 
