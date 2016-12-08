@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="settings"
+        android:enabled="true"
+		android:shortcutShortLabel="@string/main_menu_1"
+        android:shortcutLongLabel="@string/main_menu_1"
+        android:shortcutDisabledMessage="@string/shortcut_disable"
+        android:icon="@drawable/ic_cog">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.alcatraz.fclogcat"
+            android:targetClass="com.alcatraz.fclogcat.Preferences" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+	<shortcut
+        android:shortcutId="control_1"
+        android:enabled="true"
+		android:shortcutShortLabel="@string/shortcuts_1_long"
+        android:shortcutLongLabel="@string/shortcuts_1_long"
+        android:shortcutDisabledMessage="@string/shortcut_disable"
+        android:icon="@drawable/ic_bowling">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.alcatraz.fclogcat"
+            android:targetClass="com.alcatraz.fclogcat.S" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+	<shortcut
+        android:shortcutId="control_2"
+        android:enabled="true"
+		android:shortcutShortLabel="@string/main_menu_3"
+        android:shortcutLongLabel="@string/main_menu_3"
+        android:shortcutDisabledMessage="@string/shortcut_disable"
+        android:icon="@drawable/ic_reload">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.alcatraz.fclogcat"
+            android:targetClass="com.alcatraz.fclogcat.RE" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+	<shortcut
+        android:shortcutId="control_3"
+        android:enabled="true"
+		android:shortcutShortLabel="@string/main_menu_4"
+        android:shortcutLongLabel="@string/main_menu_4"
+        android:shortcutDisabledMessage="@string/shortcut_disable"
+        android:icon="@drawable/ic_power">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.alcatraz.fclogcat"
+            android:targetClass="com.alcatraz.fclogcat.ST" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+</shortcuts>

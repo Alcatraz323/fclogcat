@@ -64,7 +64,7 @@
 					android:layout_height="wrap_content"
 					android:textAppearance="?android:attr/textAppearanceLarge"
 					android:layout_width="wrap_content"
-					android:text="空"
+					android:text="@string/main_empty"
 					android:textColor="#868686"
 					android:textStyle="bold"/>
 

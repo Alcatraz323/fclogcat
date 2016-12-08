@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+
+	<android.support.design.widget.AppBarLayout
+		android:layout_height="?attr/actionBarSize"
+		android:layout_width="match_parent">
+
+		<android.support.v7.widget.Toolbar
+			android:layout_height="?android:attr/actionBarSize"
+			android:layout_width="match_parent"
+			android:background="#3f51b5"
+			android:theme="@style/Night"
+			android:fitsSystemWindows="true"
+			app:navigationIcon="?attr/homeAsUpIndicator"
+			android:id="@+id/preferenceToolbar1">
+
+		</android.support.v7.widget.Toolbar>
+
+	</android.support.design.widget.AppBarLayout>
+
+	<ListView
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:id="@android:id/list"/>
+
+</LinearLayout>
+

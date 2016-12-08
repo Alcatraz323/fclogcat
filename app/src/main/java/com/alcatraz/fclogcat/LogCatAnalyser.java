@@ -70,7 +70,14 @@ public class LogCatAnalyser
 		String[] process_1=process.split("AndroidRuntime:");
 		String[] process_2=process_1[1].split(":");
 		String[] process_3=process_2[0].split("\\.");
-		return process_3[process_3.length-1];
+		String sec="";
+		try{
+		String[] process_4=process_2[2].split("\\.");
+			sec=sec+"/"+process_4[process_4.length-1];
+		}catch(Exception e){
+			
+		}
+		return process_3[process_3.length-1]+sec;
 	}
 	public static String swi(String a)
 	{
@@ -108,5 +115,25 @@ public class LogCatAnalyser
 	public static String getTime(String line){
 		String[] process=line.split("\\.");
 		return process[0];
+	}
+	public static String getSourceClass(String line,String pkg){
+		String process=line.replace(" ","");
+		if(process.contains("BinaryXML")){
+			return "XML";
+		}
+		String[] process_1=process.split("AndroidRuntime:");
+		String[] process_2=process_1[1].split(":");
+		String[] process_3=process_2[1].split(pkg);
+		String pre=process_3[process_3.length-1];
+		String[] process_4=null;
+		if(pre.contains("'")){
+			process_4=pre.split("'");
+		}
+		if(process_4!=null){
+			if(process_4[0]!=null){
+				return process_4[0];
+			}
+		}
+		return process_3[process_3.length-1];
 	}
 }

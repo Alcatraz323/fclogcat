@@ -22,7 +22,7 @@
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:layout_width="wrap_content"
-			android:text="保存位置:"
+			android:text="@string/viewer_1"
 			android:id="@+id/viewercontentTextView2"
 			android:textColor="#FFFFFF"/>
 
@@ -44,9 +44,31 @@
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:layout_width="wrap_content"
-			android:text="错误类型:"
+			android:text="@string/viewer_2"
 			android:id="@+id/viewercontentTextView3"
 			android:textColor="#FFFEFF"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal"
+		android:gravity="left|center">
+
+		<ImageView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:src="@drawable/ic_disk_alert"
+			android:layout_margin="16dp"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:layout_width="wrap_content"
+			android:text="@string/viewer_3"
+			android:textColor="#FFFFFF"
+			android:id="@+id/viewercontentTextView1"/>
 
 	</LinearLayout>
 

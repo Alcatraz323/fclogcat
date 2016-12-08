@@ -1,0 +1,37 @@
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceCategory
+		android:title="@string/pref_c1">
+
+		<CheckBoxPreference
+			android:key="stic_noti"
+			android:summary="@string/pref_c1_cb1_summary"
+			android:title="@string/pref_c1_cb1_title"/>
+		<CheckBoxPreference
+			android:key="ce"
+			android:summary="@string/pref_c1_cb2_summary"
+			android:title="@string/pref_c1_cb2_title"/>
+		<CheckBoxPreference
+			android:key="boot"
+			android:summary="@string/pref_c1_cb3_summary"
+			android:title="@string/pref_c1_cb3_title"/>
+		
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="@string/pref_c2">
+		<CheckBoxPreference
+			android:key="single_noti"
+			android:title="@string/pref_c2_cb1_title"
+			android:summary="@string/pref_c2_cb1_summary"/>
+		<PreferenceScreen
+			android:key="hl"
+			android:title="@string/pref_c2_pcr_title"/>
+		<EditTextPreference
+			android:digits="#0123456789abcdefABCDEF"
+			android:hint="@string/pref_c2_et1_hint"
+			android:key="hb"
+			android:defaultValue="#9FA8DA"
+			android:title="@string/pref_c2_et1_title"/>
+	</PreferenceCategory>
+</PreferenceScreen>

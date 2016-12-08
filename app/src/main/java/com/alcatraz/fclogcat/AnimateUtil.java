@@ -4,6 +4,7 @@ import android.animation.*;
 import android.os.*;
 import android.view.*;
 import android.view.animation.*;
+import android.widget.*;
 
 public class AnimateUtil
 {
@@ -159,5 +160,61 @@ public class AnimateUtil
 					}
 				});
 		}
+	}
+	public static void textChange(final TextView txv,final String tx){
+		AnimationSet as1=new AnimationSet(true);
+		AlphaAnimation aa1=new AlphaAnimation(1,0);
+		aa1.setDuration(200);
+		as1.addAnimation(aa1);
+		txv.startAnimation(as1);
+		as1.setAnimationListener(new Animation.AnimationListener(){
+
+				@Override
+				public void onAnimationStart(Animation p1)
+				{
+					// TODO: Implement this method
+				}
+
+				@Override
+				public void onAnimationEnd(Animation p1)
+				{
+					txv.setVisibility(View.GONE);
+					txv.setText(tx);
+					AnimationSet as=new AnimationSet(true);
+					AlphaAnimation aa=new AlphaAnimation(0,1);
+					aa.setDuration(200);
+					as.addAnimation(aa);
+					txv.startAnimation(as);
+					as.setAnimationListener(new Animation.AnimationListener(){
+
+							@Override
+							public void onAnimationStart(Animation p1)
+							{
+								// TODO: Implement this method
+							}
+
+							@Override
+							public void onAnimationEnd(Animation p1)
+							{
+								txv.setVisibility(View.VISIBLE);
+								// TODO: Implement this method
+							}
+
+							@Override
+							public void onAnimationRepeat(Animation p1)
+							{
+								// TODO: Implement this method
+							}
+						});
+					// TODO: Implement this method
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation p1)
+				{
+					// TODO: Implement this method
+				}
+			});
+		
 	}
 }

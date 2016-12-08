@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="horizontal"
+	android:gravity="bottom"
+	android:layout_weight="1.0">
+
+	<android.support.design.widget.AppBarLayout
+		android:id="@+id/appbar"
+		android:layout_width="match_parent"
+		android:layout_height="55dp">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="horizontal"
+			android:background="#D9D9D9">
+
+			<Button
+				android:background="?android:attr/selectableItemBackgroundBorderless"
+				style="?android:attr/buttonBarButtonStyle"
+				android:layout_height="match_parent"
+				android:layout_width="wrap_content"
+				android:textColor="#383838"
+				android:drawableLeft="@drawable/ic_chevron_left"
+				android:layout_marginLeft="32dp"
+				android:text="@string/setup_step_before"
+				android:textSize="16dp"
+				android:id="@+id/setupnavButton1"/>
+
+			<LinearLayout
+				android:layout_height="match_parent"
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:gravity="right">
+
+				<Button
+					android:background="?android:attr/selectableItemBackgroundBorderless"
+					style="?android:attr/buttonBarButtonStyle"
+					android:layout_height="match_parent"
+					android:layout_width="wrap_content"
+					android:text="@string/setup_step_next"
+					android:textColor="#383838"
+					android:layout_marginRight="32dp"
+					android:drawableRight="@drawable/ic_chevron_right"
+					android:textSize="16dp"
+					android:id="@+id/setupnavButton2"/>
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</android.support.design.widget.AppBarLayout>
+
+</LinearLayout>
+

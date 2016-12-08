@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+	<android.support.design.widget.AppBarLayout
+		android:id="@+id/appbar"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+		<android.support.v7.widget.Toolbar
+			android:theme="@style/Night"
+			android:id="@+id/mytoolbar_1"
+			app:title="@string/main_menu_2"
+			android:background="@android:color/transparent"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"/>
+    <android.support.v7.widget.CardView
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		app:cardMaxElevation="4dp"
+		app:cardElevation="2dp"
+		app:cardPreventCornerOverlap="true"
+		app:cardUseCompatPadding="true"
+		app:cardBackgroundColor="@android:color/transparent"
+		android:layout_marginLeft="3dp"
+		android:layout_marginRight="3dp"
+		android:id="@+id/listcardCardView1">
+		<include
+			layout="@layout/author_content"/>
+	</android.support.v7.widget.CardView>
+	
+	</android.support.design.widget.AppBarLayout>
+</LinearLayout>

@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity
 	android.support.v7.widget.Toolbar tb;
 	DrawerLayout dl;
 	ListView lv;
-	ImageButton imgb;
 	LinearLayout emp_1;
 	LinearLayout emp_2;
 	innerRec rec=new innerRec();
@@ -33,8 +32,7 @@ public class MainActivity extends AppCompatActivity
 	View v;
 	SwipeRefreshLayout srl;
 	LinkedList<String> data=new LinkedList<String>();
-	List<String> card_data_key=new ArrayList<String>();;
-	ListViewAdapter lva;
+	List<String> card_data_key=new ArrayList<String>();
 	ExpandableListView elv;
 	ExpandableAdapter file_adp;
 	Map<String,List<String>> card_data=new HashMap<String,List<String>>();
@@ -44,11 +42,13 @@ public class MainActivity extends AppCompatActivity
 	boolean record=false;
 	String time_file;
 	ListCardAdapter lca;
+	Boolean ce;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+		ce=getSharedPreferences(getPackageName()+"preferences",MODE_PRIVATE).getBoolean("ce",false);
 		initData();
 		init_main_card_list();
 		initViews();
@@ -56,15 +56,48 @@ public class MainActivity extends AppCompatActivity
 		if(!isServiceRunning()){
 			startService(new Intent(this,BackGroundCatcher.class));
 		}
-		
+
     }
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// TODO: Implement this method
+		MenuInflater mi=new MenuInflater(this);
+		mi.inflate(R.menu.main_menu,menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
 	@Override
 	protected void onResume()
 	{
 		// TODO: Implement this method
 		super.onResume();
+		if(!isServiceRunning()){
+			startService(new Intent(this,BackGroundCatcher.class));
+		}
 		ref();
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		// TODO: Implement this method
+		switch(item.getItemId()){
+			case R.id.item1:
+				startActivity(new Intent(this,Preferences.class));
+				break;
+			case R.id.item2:
+				startActivity(new Intent(this,Author.class));
+				break;
+			case R.id.item3:
+				sendBroadcast(new Intent().setAction(BackGroundCatcher.RESTART_TAG));
+				break;
+			case R.id.item4:
+				sendBroadcast(new Intent().setAction(BackGroundCatcher.SHUTDOWN_TAG));
+				finish();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	public void initViews()
@@ -73,22 +106,11 @@ public class MainActivity extends AppCompatActivity
 		dl=(DrawerLayout) findViewById(R.id.mainDrawerLayout1);
 		elv=(ExpandableListView) findViewById(R.id.drawerfileExpandableListView1);
 		lv=(ListView) findViewById(R.id.mainListView1);
-		lva=new ListViewAdapter(this,data,lv);
 		abl=(AppBarLayout) findViewById(R.id.mainAppBarLayout1);
 		lca=new ListCardAdapter(this,card_data,card_data_key);
 		lv.setAdapter(lca);
 		emp_1=(LinearLayout) findViewById(R.id.mainLinearLayout1);
 		emp_2=(LinearLayout) findViewById(R.id.emptyviewLinearLayout1);
-		imgb=(ImageButton) findViewById(R.id.navheaderImageButton1);
-		imgb.setOnClickListener(new OnClickListener(){
-
-				@Override
-				public void onClick(View p1)
-				{
-					startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://github.com/Alcatraz323")));
-					// TODO: Implement this method
-				}
-			});
 		v=findViewById(R.id.mainView1);
 		srl=(SwipeRefreshLayout) findViewById(R.id.drawerfileSwipeRefreshLayout1);
 		srl.setColorSchemeResources(R.color.default_colorPrimary);
@@ -102,13 +124,17 @@ public class MainActivity extends AppCompatActivity
 					// TODO: Implement this method
 				}
 			});
-		
+
 		file_adp=new ExpandableAdapter(this,parent,map);
 		elv.setAdapter(file_adp);
 		setSupportActionBar(tb);
 		new DrawerLayoutUtil().setImmersiveToolbarWithDrawer(tb,dl,this,v,"#3f51b5",Build.VERSION.SDK_INT);
+		if(Build.VERSION.SDK_INT<Build.VERSION_CODES.LOLLIPOP){
+			v.setVisibility(View.GONE);
+		}
 	}
-	public void ref(){
+	public void ref()
+	{
 		initData();
 		init_main_card_list();
 		if(map.size()==0||card_data.size()==0){
@@ -121,7 +147,7 @@ public class MainActivity extends AppCompatActivity
 		file_adp.notifyDataSetChanged();
 		lca.notifyDataSetChanged();
 	}
-	
+
 	public void initData()/*drawerlayout的文件列表加载*/
 	{
 		parent.clear();
@@ -148,7 +174,7 @@ public class MainActivity extends AppCompatActivity
 
 		}
 	}
-	
+
 	public void init_main_card_list()
 	{
 		card_data_key.clear();
@@ -169,9 +195,9 @@ public class MainActivity extends AppCompatActivity
 								break;
 							}
 							if(k!=0){
-							pkg=pkg+"."+n;
+								pkg=pkg+"."+n;
 							}else{
-							pkg=pkg+n;
+								pkg=pkg+n;
 							}
 							k++;
 						}
@@ -193,9 +219,13 @@ public class MainActivity extends AppCompatActivity
 	{
 		// TODO: Implement this method
 		super.onDestroy();
+		if(ce){
+		sendBroadcast(new Intent().setAction(BackGroundCatcher.SHUTDOWN_TAG));
+		}
 		unregisterReceiver(rec);
 	}
-	public void regist(){
+	public void regist()
+	{
 		IntentFilter ifil=new IntentFilter();
 		ifil.addAction(ACTION_TAG);
 		registerReceiver(rec,ifil);

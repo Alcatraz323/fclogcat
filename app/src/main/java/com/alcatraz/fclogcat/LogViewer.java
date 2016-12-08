@@ -21,10 +21,13 @@ public class LogViewer extends AppCompatActivity
 {
 	android.support.v7.widget.Toolbar tb;
 	NoScrollListView lv;
+	TextView txv;
 	TextView txv2;
 	TextView txv3;
+	LinearLayout ll;
 	ImageView imgv;
 	String exc;
+	String cls="";
 	ListViewAdapter lva;
 	AppBarLayout abl;
 	FloatingActionButton fab;
@@ -35,17 +38,25 @@ public class LogViewer extends AppCompatActivity
 	String label;
 	String path;
 	Drawable icon;
+	/*shared*/
+	Set<String> set;
+	String hb;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		// TODO: Implement this method
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.viewer);
+		initSetting();
 		getData(getIntent());
 		initData();
 		initViews();
 	}
-	
+	public void initSetting(){
+		SharedPreferences spf=getSharedPreferences(getPackageName()+"_preferences",MODE_PRIVATE);
+		set=spf.getStringSet("hldb",SpfConstants.getDefSet());
+		hb=spf.getString("hb","#9fa8da");
+	}
 	@TargetApi(Build.VERSION_CODES.KITKAT)
     private void setTranslucentStatus(boolean on,Activity act) {
         Window win = act.getWindow();
@@ -65,7 +76,7 @@ public class LogViewer extends AppCompatActivity
 		int paddingBottom = mToolbar.getPaddingBottom();
 		int paddingLeft = mToolbar.getPaddingLeft();
 		int paddingRight = mToolbar.getPaddingRight();
-		
+		ll.setPadding(ll.getPaddingLeft(),statusBarHeight,ll.getPaddingRight(),ll.getPaddingBottom());
 		ViewGroup.LayoutParams params = mToolbar.getLayoutParams();
 		int height = params.height;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -79,7 +90,7 @@ public class LogViewer extends AppCompatActivity
 			}
 
             params.height = height;
-            mToolbar.setPadding(paddingLeft,0, paddingRight, paddingBottom);
+            mToolbar.setPadding(paddingLeft,paddingTop, paddingRight, paddingBottom);
 
         }
     }
@@ -107,17 +118,19 @@ public class LogViewer extends AppCompatActivity
 		setSupportActionBar(tb);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		ll=(LinearLayout) findViewById(R.id.viewerLinearLayout1);
 		Immersive(tb,true,this);
 		abl=(AppBarLayout) findViewById(R.id.appbar);
 		ctl=(CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
 		ctl.setTitle(label);
 		ctl.setCollapsedTitleTextColor(Color.WHITE);
 		ctl.setExpandedTitleColor(Color.WHITE);
-		tb.getLayoutParams().height=dpToPx(this,56);
+		txv=(TextView) findViewById(R.id.viewercontentTextView1);
 		txv2=(TextView) findViewById(R.id.viewercontentTextView2);
 		txv3=(TextView) findViewById(R.id.viewercontentTextView3);
 		txv2.setText(txv2.getText().toString()+path);
 		txv3.setText(txv3.getText().toString()+exc);
+		txv.setText(txv.getText().toString()+cls);
 		fab=(FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new OnClickListener(){
 
@@ -125,10 +138,10 @@ public class LogViewer extends AppCompatActivity
 				public void onClick(View p1)
 				{
 					android.support.v7.app.AlertDialog a=new android.support.v7.app.AlertDialog.Builder(LogViewer.this)
-						.setTitle("确认")
-						.setMessage("是否删除")
-						.setNegativeButton("否",null)
-						.setPositiveButton("是",new DialogInterface.OnClickListener(){
+						.setTitle(R.string.delete_ad_title)
+						.setMessage(R.string.delete_ad_msg)
+						.setNegativeButton(R.string.delete_ad_nb,null)
+						.setPositiveButton(R.string.delete_ad_pb,new DialogInterface.OnClickListener(){
 
 							@Override
 							public void onClick(DialogInterface p1, int p2)
@@ -145,7 +158,7 @@ public class LogViewer extends AppCompatActivity
 				}
 			});
 		lv=(NoScrollListView) findViewById(R.id.viewercontentListView1);
-		lva=new ListViewAdapter(this,data,lv);
+		lva=new ListViewAdapter(this,data,lv,pkg,set,hb);
 		lv.setAdapter(lva);
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		lv.setMultiChoiceModeListener(new MultiChoiceModeListener(){
@@ -224,7 +237,7 @@ public class LogViewer extends AppCompatActivity
 					}else{
 						selected.remove(p2);
 					}
-					p1.setTitle("选择了"+selected.size()+"项");
+					p1.setTitle(getString(R.string.multi_1)+selected.size()+getString(R.string.multi_2));
 					lva.notifyDataSetChanged();
 					// TODO: Implement this method
 				}
@@ -239,25 +252,39 @@ public class LogViewer extends AppCompatActivity
 				BufferedReader reader=new BufferedReader(isr);
 				String line;
 				int i=0;
+				boolean hasGotExc=false;
 				while((line=reader.readLine())!=null){
 					data.add(line);
-					if(i==2){
-						exc=LogCatAnalyser.getException(line);
+					if(i>=2&&!hasGotExc){
+						if(line.contains("Exception")){
+							exc=LogCatAnalyser.getException(line);
+							hasGotExc=true;
+						}
+					}
+					if(i>=2){
+							if(line.contains("at "+pkg)){
+								String[] pro_1=line.split(" ");
+								cls=pro_1[pro_1.length-1]+"\n";
+							}
 					}
 					i++;
 				}
 				fis.close();
 			}
-		}catch(Exception e){}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	public void getData(Intent i)
 	{
 		Bundle data=i.getExtras();
-		pkg=data.getString("pkg");
 		label=data.getString("label");
 		path=data.getString("path");
+		pkg=getPkgManual(path);
 		icon=getIcon(pkg);
 	}
+
+	
 	public Drawable getIcon(String pkg){
 		PackageManager pm=getPackageManager();
 		try{
@@ -266,5 +293,23 @@ public class LogViewer extends AppCompatActivity
 		}catch(PackageManager.NameNotFoundException e){
 			return null;
 		}
+	}
+	public String getPkgManual(String p){
+		String[] pro=p.split(" ");
+		String[] pkg_t=pro[2].split("\\.");
+		String pkg="";
+		int k=0;
+		for(String n:pkg_t){
+			if(n.equals(pkg_t[pkg_t.length-1])){
+				break;
+			}
+			if(k!=0){
+				pkg=pkg+"."+n;
+			}else{
+				pkg=pkg+n;
+			}
+			k++;
+		}
+		return pkg;
 	}
 }

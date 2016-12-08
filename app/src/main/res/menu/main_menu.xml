@@ -2,8 +2,16 @@
     
     <item
         android:id="@+id/item1"
-		android:icon="@drawable/ic_delete_1"
+		android:icon="@drawable/ic_settings_white_24dp"
 		android:showAsAction="ifRoom|withText"
-        android:title="删除"/>
-    
+        android:title="@string/main_menu_1"/>
+    <item
+        android:id="@+id/item2"
+        android:title="@string/main_menu_2"/>
+    <item
+        android:id="@+id/item3"
+        android:title="@string/main_menu_3"/>
+	<item
+        android:id="@+id/item4"
+        android:title="@string/main_menu_4"/>
 </menu>

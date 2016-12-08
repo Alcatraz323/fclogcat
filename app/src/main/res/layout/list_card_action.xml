@@ -11,7 +11,7 @@
 		android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:layout_width="wrap_content"
-		android:text="删除该应用的所有日志？"/>
+		android:text="@string/main_delete_all"/>
 
 	<LinearLayout
 		android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
 			style="?android:attr/buttonBarButtonStyle"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:text="是"
+			android:text="@string/delete_ad_pb"
 			android:textColor="#DFDFDF"
 			android:id="@+id/listcardactionButton2"/>
 
@@ -30,7 +30,7 @@
 			style="?android:attr/buttonBarButtonStyle"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:text="否"
+			android:text="@string/delete_ad_nb"
 			android:textColor="#E5E5E5"
 			android:id="@+id/listcardactionButton1"/>
 

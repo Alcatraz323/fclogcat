@@ -6,29 +6,31 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
-
 	<android.support.design.widget.AppBarLayout
 		android:id="@+id/appbar"
 		android:layout_width="match_parent"
-		android:layout_height="235dp">
-		<android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="#3f51b5"
-			app:statusBarScrim="#3f51b5"
-            app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-		
-			
-				<LinearLayout
+		android:layout_height="280dp">
 
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:orientation="vertical">
-					<include
-						layout="@layout/viewer_content"/>
-				</LinearLayout>
+		<android.support.design.widget.CollapsingToolbarLayout
+			android:id="@+id/collapsing_toolbar_layout"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			app:contentScrim="#3f51b5"
+			app:statusBarScrim="#3f51b5"
+			app:expandedTitleMarginStart="48dp"
+			app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical"
+				android:id="@+id/viewerLinearLayout1">
+
+				<include
+					layout="@layout/viewer_content"/>
+
+			</LinearLayout>
+
 			<android.support.v7.widget.Toolbar
 				android:theme="@style/Night"
 				android:id="@+id/mytoolbar_1"
@@ -36,15 +38,16 @@
 				app:layout_scrollFlags="scroll|exitUntilCollapsed"
 				android:layout_height="?attr/actionBarSize"
 				app:layout_collapseMode="pin"/>
-			
-			
+
 		</android.support.design.widget.CollapsingToolbarLayout>
 
 	</android.support.design.widget.AppBarLayout>
+
 	<android.support.v4.widget.NestedScrollView
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
 		<com.alcatraz.fclogcat.NoScrollListView
 			android:divider="@null"
 			android:layout_height="match_parent"
@@ -64,7 +67,7 @@
 		app:borderWidth="0dp"
 		app:elevation="6dp"
 		app:fabSize="normal"
-		app:layout_anchor="@id/coordinator_layout"
+		app:layout_anchor="@id/viewercontentListView1"
 		app:layout_anchorGravity="bottom|right"
 		app:pressedTranslationZ="12dp"
 		app:rippleColor="#a6a6a6"/>

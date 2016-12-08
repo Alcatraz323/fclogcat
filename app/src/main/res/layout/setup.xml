@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/coordinator_layout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
+
+		<android.support.design.widget.AppBarLayout
+			android:id="@+id/appbar"
+			android:gravity="bottom"
+			android:layout_width="match_parent"
+			android:layout_height="240dp">
+
+			<FrameLayout
+				android:layout_height="match_parent"
+				android:layout_width="match_parent">
+
+				<ImageView
+					android:layout_height="match_parent"
+					android:layout_width="match_parent"
+					android:src="@drawable/common_setup_wizard_illustration_generic_wide"
+					android:scaleType="fitXY"/>
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:gravity="bottom"
+					android:id="@+id/setupLinearLayout1">
+
+					<TextView
+						android:layout_height="wrap_content"
+						android:textSize="32dp"
+						android:layout_width="match_parent"
+						android:text="@string/setup_title_1"
+						android:layout_marginLeft="16dp"
+						android:textColor="#FFFFFF"
+						android:layout_marginBottom="16dp"
+						android:id="@+id/setupTextView1"/>
+
+				</LinearLayout>
+
+			</FrameLayout>
+
+		</android.support.design.widget.AppBarLayout>
+
+		<com.alcatraz.support.v4.appcompat.ViewPagerMin
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:id="@+id/setupViewPagerMin1"/>
+
+	</LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
+

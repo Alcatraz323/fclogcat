@@ -132,10 +132,10 @@ public class ExpandableAdapter extends BaseExpandableListAdapter
 				public void onClick(View p1)
 				{
 					android.support.v7.app.AlertDialog a=new android.support.v7.app.AlertDialog.Builder(ctx)
-					.setTitle("确认")
-					.setMessage("是否删除")
-					.setNegativeButton("否",null)
-					.setPositiveButton("是",new DialogInterface.OnClickListener(){
+					.setTitle(ctx.getString(R.string.delete_ad_title))
+					.setMessage(ctx.getString(R.string.delete_ad_msg))
+					.setNegativeButton(R.string.delete_ad_nb,null)
+					.setPositiveButton(R.string.delete_ad_pb,new DialogInterface.OnClickListener(){
 
 							@Override
 							public void onClick(DialogInterface p1, int p2)
