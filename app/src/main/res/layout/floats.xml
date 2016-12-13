@@ -1,0 +1,68 @@
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:theme="@style/AppTheme"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<LinearLayout
+		android:id="@+id/floatwindowLinearLayout1"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:orientation="vertical"
+		android:visibility="gone"
+		android:background="#4E4E4E">
+
+		<android.support.v4.widget.DrawerLayout
+			android:layout_height="350dp"
+			android:layout_width="260dp"
+			android:id="@+id/floatwindowDrawerLayout1">
+
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+
+				<include
+					layout="@layout/float_bar"/>
+				<LinearLayout
+					android:layout_height="match_parent"
+					android:layout_width="match_parent"
+					android:orientation="vertical">
+					
+						<ListView
+							android:layout_height="match_parent"
+							android:layout_width="match_parent"
+							android:id="@+id/floatwindowListView1"/>
+
+					
+
+				</LinearLayout>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:background="#696969"
+				android:layout_gravity="left"
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+				<include
+					layout="@layout/float_side"/>
+				
+			</LinearLayout>
+
+		</android.support.v4.widget.DrawerLayout>
+
+	</LinearLayout>
+
+	<ImageButton
+		style="?android:attr/buttonBarButtonStyle"
+		android:layout_height="58dp"
+		android:layout_width="58dp"
+		android:src="@drawable/ic_alert"
+		android:layout_toRightOf="@id/floatwindowLinearLayout1"
+		android:id="@+id/floatwindowImageButton1"
+		android:scaleType="centerCrop"/>
+
+</RelativeLayout>
+

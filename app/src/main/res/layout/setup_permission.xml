@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+
+	<TextView
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="wrap_content"
+		android:text="@string/perm_1"
+		android:layout_margin="16dp"/>
+
+	<Button
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:text="@string/perm_1"
+		android:id="@+id/setuppermissionButton1"
+		android:layout_marginLeft="64dp"
+		android:layout_marginRight="64dp"/>
+
+	<TextView
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="wrap_content"
+		android:text="@string/perm_2"
+		android:layout_margin="16dp"/>
+
+	<Button
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:text="@string/perm_2"
+		android:id="@+id/setuppermissionButton2"
+		android:layout_marginLeft="64dp"
+		android:layout_marginRight="64dp"/>
+
+	<include
+		layout="@layout/setup_nav"/>
+
+</LinearLayout>
+

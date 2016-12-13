@@ -1,23 +1,30 @@
 package com.alcatraz.fclogcat;
 import android.app.*;
 import android.content.*;
-import android.os.*;
-import com.alcatraz.support.implutil.*;
-import android.util.*;
-import java.text.*;
-import java.io.*;
-import java.util.*;
-import android.graphics.*;
-import android.widget.*;
 import android.content.pm.*;
-import android.graphics.drawable.*;
+import android.graphics.*;
+import android.net.*;
+import android.os.*;
+import android.support.v4.widget.*;
 import android.view.*;
+import android.view.View.*;
+import android.view.WindowManager.*;
+import android.widget.*;
+import com.alcatraz.support.implutil.*;
+import java.io.*;
+import java.text.*;
+import java.util.*;
+import android.graphics.drawable.*;
+import java.net.*;
+import android.support.v4.content.*;
 
 public class BackGroundCatcher extends Service
 {
 	public static String NO_ROOT_TAG="noroot";
 	public static String SHUTDOWN_TAG="shutdown";
 	public static String RESTART_TAG="restart";
+	public static String DELETE="delete";
+	public static String Add_fl="add_fl";
 	boolean record=false;
 	String file_buffer="";
 	ShortcutManager mShortcutManager;
@@ -25,10 +32,13 @@ public class BackGroundCatcher extends Service
 	String packagen;
 	Noroottagrec nrc;
 	SharedPreferences spf;
+	LogCat l;
 	boolean packageget=false;
 	int id=0;
+	
 	/*spf         */
 	boolean boot;
+	boolean clean_up;
 	boolean stic_noti;
 	boolean single_noti;
 	@Override
@@ -42,6 +52,7 @@ public class BackGroundCatcher extends Service
 		boot = spf.getBoolean("boot", true);
 		stic_noti = spf.getBoolean("stic_noti", false);
 		single_noti = spf.getBoolean("single_noti", false);
+		clean_up=spf.getBoolean("clean_up",false);
 	}
 	@Override
 	public void onCreate()
@@ -51,13 +62,25 @@ public class BackGroundCatcher extends Service
 		//setupShortcuts();
 		spf = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
 		updatePref();
+		
 	}
+	public Drawable getIcon(String pkg){
+		PackageManager pm=getPackageManager();
+		try{
+			ApplicationInfo ai=pm.getApplicationInfo(pkg,PackageManager.GET_META_DATA);
+			return pm.getApplicationIcon(ai);
+		}catch(PackageManager.NameNotFoundException e){
+			return null;
+		}
+
+	}
+	
 	public boolean isServiceRunning()
 	{
 	    ActivityManager manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
 	    for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE))
 		{
-	        if ((getPackageName() + ".BackGroundCatcher").equals(service.service.getClassName()))
+	        if ((getPackageName() + ".FloatService").equals(service.service.getClassName()))
 			{
 	            return true;
 	        }
@@ -69,10 +92,14 @@ public class BackGroundCatcher extends Service
 		NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		Intent i=new Intent(this, MainActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
+		Intent i2=new Intent();
+		i2.setAction(SHUTDOWN_TAG);
+		PendingIntent P2=PendingIntent.getBroadcast(this,0,i2,0);
 		Notification.Builder nb=new Notification.Builder(this)
 			.setContentIntent(pendingIntent)
 			.setAutoCancel(true)
 			.setVibrate(new long[]{2,2})
+			.addAction(R.drawable.ic_power_grey600_24dp,getString(R.string.main_menu_4),P2)
 			.setContentText(getString(R.string.service_running))
 			.setSmallIcon(R.drawable.ic_alert)
 			.setContentTitle(getString(R.string.app_name));
@@ -84,9 +111,9 @@ public class BackGroundCatcher extends Service
 	@Override
 	public void onStart(Intent intent, int startId)
 	{
-
-		// TODO: Implement this method
+		// TODO: Implement this metho
 		super.onStart(intent, startId);
+		
 		if (intent != null && intent.getAction() != null)
 		{
 			if (intent.getAction().equals(BootRec.START_FROM_BOOT))
@@ -102,7 +129,7 @@ public class BackGroundCatcher extends Service
 			setStaticNoti();
 		}
 		regist();
-		LogCat l=new LogCat("logcat -v threadtime", LogCat.start_flag_require_root, getPackageCodePath());
+		l=new LogCat("logcat -v threadtime", LogCat.start_flag_require_root, getPackageCodePath());
 		l.readLogCat(new LogCat.LogCatInterface(){
 
 				@Override
@@ -141,6 +168,14 @@ public class BackGroundCatcher extends Service
 							packageget = false;
 							time_file = null;
 							packagen = null;
+							if(clean_up){
+								try
+								{
+									Runtime.getRuntime().exec("su -c logcat -c");
+								}
+								catch (IOException e)
+								{}
+							}
 						}
 					}
 					// TODO: Implement this method
@@ -164,27 +199,63 @@ public class BackGroundCatcher extends Service
 	{
 		if (dir != null)
 		{
+			if (!single_noti)
+			{
+				id = id + 1;
+			}
+			
 			NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			Intent i=new Intent(this, MainActivity.class);
-			PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
+			Intent i=new Intent(this, LogViewer.class);
+			i.putExtras(getNotiData(dir));
+			Intent ijj=new Intent();
+			ijj.putExtras(getNotiData(dir));
+			ijj.setAction(FloatService.ADD_TAG);
+			Intent i2=new Intent();
+			i2.setAction(DELETE);
+			i2.putExtra("dir",dir);
+			i2.putExtra("id",id);
+			File bhhd=new File(dir);
+			Intent ig=new Intent(Intent.ACTION_SEND);
+			ig.setType("*/*");
+			if(Build.VERSION.SDK_INT>=24){
+				ig.putExtra(Intent.EXTRA_STREAM,FileProvider.getUriForFile(this,"com.alcatraz.fclogcat.fileProvider",bhhd));
+			}else{
+			ig.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(bhhd));
+			}
+			PendingIntent p3=PendingIntent.getActivity(this,id,ig,PendingIntent.FLAG_UPDATE_CURRENT);
+			PendingIntent p2=PendingIntent.getBroadcast(this,id,i2,PendingIntent.FLAG_UPDATE_CURRENT);
+			PendingIntent p4=PendingIntent.getBroadcast(this,id,ijj,PendingIntent.FLAG_UPDATE_CURRENT);
+			PendingIntent pendingIntent = PendingIntent.getActivity(this, id, i, PendingIntent.FLAG_UPDATE_CURRENT);
 			Notification.Builder nb=new Notification.Builder(this)
 				.setContentIntent(pendingIntent)
 				.setAutoCancel(true)
 				.setVibrate(new long[]{2,2})
 				.setContentText(dir)
 				.setSmallIcon(R.drawable.ic_alert)
-				.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_alert))
+				.setLargeIcon(drawableToBitmap(getIcon(getPkg(new File(dir).getName()))))
 				.setContentTitle(getLabel(getPkg(new File(dir).getName())))
+				.addAction(R.drawable.ic_share_variant_grey600_24dp,getString(R.string.notification_1),p3)
+				.addAction(R.drawable.ic_delete_grey600_24dp,getString(R.string.notification_2),p2)
+				.addAction(R.drawable.ic_flash_grey600_24dp,getString(R.string.notification_3),p4)
 				.setFullScreenIntent(pendingIntent, true);
 			Notification n=nb.build();
-			if (!single_noti)
-			{
-				id = id + 1;
-			}
 			manager.notify(id, n);
-
+			
 		}
 
+	}
+	public static Bitmap drawableToBitmap(Drawable drawable) {
+
+        Bitmap bitmap = Bitmap.createBitmap(
+			drawable.getIntrinsicWidth(),
+			drawable.getIntrinsicHeight(),
+			drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+			: Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        //canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return bitmap;
 	}
 	public String output(String content, String time)
 	{
@@ -255,6 +326,7 @@ public class BackGroundCatcher extends Service
 	{
 		// TODO: Implement this method
 		unregisterReceiver(nrc);
+		l.kill();
 		NotificationManager m=(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		try
 		{
@@ -271,6 +343,7 @@ public class BackGroundCatcher extends Service
 		ifil.addAction(NO_ROOT_TAG);
 		ifil.addAction(SHUTDOWN_TAG);
 		ifil.addAction(RESTART_TAG);
+		ifil.addAction(DELETE);
 		registerReceiver(nrc, ifil);
 	}
 	public String getLabel(String pkg)
@@ -320,7 +393,14 @@ public class BackGroundCatcher extends Service
 				stopSelf();
 				startService(new Intent(BackGroundCatcher.this, BackGroundCatcher.class));
 			}
+			else if(p2.getAction().equals(DELETE)){
+				File f=new File(p2.getStringExtra("dir"));
+				f.delete();
+				NotificationManager nm=(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+				nm.cancel(p2.getIntExtra("id",0));
+			}
 			// TODO: Implement this method
 		}
 	}
+	
 }

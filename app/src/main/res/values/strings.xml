@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">FC Catcher</string>
 	<string name="service_running">Service running...</string>
-	<string name="au_l_1">Version 1.6.0</string>
+	<string name="au_l_1">Version 2.0.0(pre_Fin)</string>
 	<string name="au_l_2">Developer</string>
 	<string name="au_l_2_1">Main:Alcatraz,Thanks busstop12 for help</string>
 	<string name="au_l_3">View source</string>
@@ -21,6 +21,9 @@
 	<string name="pref_c2_pcr_title">Text Highlight</string>
 	<string name="pref_c2_et1_title">Highlight for line</string>
 	<string name="pref_c2_et1_hint">RGB(A) color,#xxxxxx</string>
+	<string name="pref_c3">Run</string>
+	<string name="pref_c3_cb1_title">Do clean up</string>
+	<string name="pref_c3_cb1_summary">Run logcat -c after fc occured</string>
 	<string name="pref_apply">It will be applied when you exit this Activity</string>
 	<string name="pref_no_file_chooser">No file chooser</string>
 	<string name="already_start">Service already running</string>
@@ -29,6 +32,24 @@
 	<string name="main_menu_2">About</string>
 	<string name="main_menu_3">Restart service</string>
 	<string name="main_menu_4">Kill service</string>
+	<string name="main_report_bug">Please deliver the error to the address below</string>
+	<string name="main_drawer_1_t">Optional</string>
+	<string name="main_drawer_1">Simple Terminal</string>
+	<string name="main_drawer_2_t">Other</string>
+	<string name="main_drawer_2">Report a bug</string>
+	<string name="main_drawer_3">Check Update</string>
+	<string name="perm_1">Overlay Permission(Float Window)</string>
+	<string name="perm_2">Storage</string>
+	<string name="perm_denial">How can you deny my request!</string>
+	<string name="perm_granted">Permission Granted</string>
+	<string name="float_1">Close floatwindow</string>
+	<string name="notification_1">Share</string>
+	<string name="notification_2">Delete</string>
+	<string name="notification_3">Float up</string>
+	<string name="terminal_1">Recent Command</string>
+	<string name="main_check_failed">Cant check update,please check Internet connection</string>
+	<string name="main_check_latest">You are using latest version</string>
+	<string name="main_check_not_latest">Update found</string>
 	<string name="actionmode_1">Copy</string>
 	<string name="actionmode_2">Share</string>
 	<string name="shortcuts_1_long">Start service</string>
@@ -70,4 +91,21 @@
 	<string name="setup_4_1">Input from file</string>
 	<string name="setup_4_2">Add...</string>
 	<string name="setup_4_3">Html node</string>
+	
+	<!-- Version 1.6.0 update log-->
+	<string name="setup_title_5">Permissions</string>
+	<string name="setup_title_6">Update Log</string>
+	<string name="u_1">1.Fixed double service</string>
+	<string name="u_2">2.Added actions share,delete,floatwindow to Notification,also allow to access logviewer by notification</string>
+	<string name="u_3">3.Float window</string>
+	<string name="u_4">4.Android 7.1/Nova Launcher Shortcuts implemention</string>
+	<string name="u_5">5.Changed targetApi,use permission request above Api23</string>
+	<string name="u_6">6.Simple Terminal</string>
+	<string name="u_7">7.Double Drawer(File list changed to right side)</string>
+	<string name="u_8">8.Check Update(Based on Jsoup)</string>
+	<string name="u_9">9.More Material Design Elements</string>
+	<string name="u_10">10.Icon changed</string>
+	<string name="u_11">11.Added run logcat -c after caught crash(Preference,Default off)</string>
+	<string name="u_12">12.Added language zh-rCN,zh-rTW</string>
+	<string name="u_13">13.UI/Bug fixes.</string>
 </resources>

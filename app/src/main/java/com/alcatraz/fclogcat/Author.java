@@ -28,7 +28,15 @@ public class Author extends AppCompatActivity
 		initData();
 		initViews();
 	}
-
+	public void showDetailDev(){
+		android.support.v7.app.AlertDialog g=new android.support.v7.app.AlertDialog.Builder(this)
+		.setTitle(R.string.au_l_2)
+		.setMessage("主代码:Alcatraz\n应用图标:busstop12\nShortcuts图标:busstop12\n简体中文:Alcatraz\n英文:Alcatraz\n繁体中文:busstop12\n感谢busstop12的帮助,同时向以下开发者致敬\n\n~Jsoup.Org\n~Github.Jaeger")
+		.setPositiveButton(R.string.ad_pb,null)
+		.create();
+		new AlertDialogUtil().setSupportDialogColor(g,Color.parseColor("#3f51b5"));
+		g.show();
+	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -65,6 +73,8 @@ public class Author extends AppCompatActivity
 						Intent localIntent = new Intent("android.intent.action.VIEW");
 						localIntent.setData(Uri.parse(str));
 						startActivity(localIntent);
+					}else if(p1.getItemAtPosition(p3).toString().equals(getString(R.string.au_l_2))){
+						showDetailDev();
 					}
 				}
 				// TODO: Implement this metho

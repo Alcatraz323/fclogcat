@@ -12,9 +12,9 @@
 		android:gravity="left|center">
 
 		<ImageView
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:src="@drawable/ic_alert"
+			android:layout_height="32dp"
+			android:layout_width="32dp"
+			android:src="@drawable/ic_alert_md_logo"
 			android:layout_margin="16dp"/>
 
 		<TextView

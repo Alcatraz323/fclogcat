@@ -34,4 +34,13 @@
 			android:defaultValue="#9FA8DA"
 			android:title="@string/pref_c2_et1_title"/>
 	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="@string/pref_c3">
+
+		<CheckBoxPreference
+			android:key="clean_up"
+			android:summary="@string/pref_c3_cb1_summary"
+			android:title="@string/pref_c3_cb1_title"/>
+		
+	</PreferenceCategory>
 </PreferenceScreen>

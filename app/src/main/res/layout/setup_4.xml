@@ -47,6 +47,8 @@
 		android:id="@+id/setup4FloatingActionButton1"/>
 	
 	<include
+		app:layout_anchor="@id/setup4LinearLayout"
+		app:layout_anchorGravity="bottom"
 		layout="@layout/setup_nav"/>
 
 </android.support.design.widget.CoordinatorLayout>

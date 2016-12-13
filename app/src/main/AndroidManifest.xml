@@ -5,22 +5,13 @@
 	<uses-permission android:name="android.permission.VIBRATE"/>
 	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-		
+	<uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_alert"
+        android:icon="@drawable/ic_alert_md_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 		
-		<meta-data
-			android:name="xposedmodule"
-			android:value="false" />
-		<meta-data
-			android:name="xposeddescription"
-			android:value="Alcatraz xposed terminal sequence"/>
-		<meta-data
-			android:name="xposedminversion"
-			android:value="30" />
 		
         <activity
 			android:launchMode="singleTask"
@@ -65,6 +56,8 @@
 		<activity
 			android:name=".Author"/>
 		<activity
+			android:name=".MTerminal"/>
+		<activity
 			android:name=".MainActivity"/>
 		<receiver
 			android:name=".BootRec">
@@ -76,6 +69,18 @@
 		<service
 			android:name=".BackGroundCatcher"
 			/>
+		<service
+			android:name=".FloatService"
+		/>
+		<provider
+			android:name="android.support.v4.content.FileProvider"
+			android:authorities="com.alcatraz.fclogcat.fileProvider"
+			android:grantUriPermissions="true"
+			android:exported="false">
+			<meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/fpd" />
+		</provider>
     </application>
 
 </manifest>

@@ -75,7 +75,7 @@
 	</LinearLayout>
 
 	<LinearLayout
-		android:layout_gravity="left"
+		android:layout_gravity="right"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:background="#FFFFFF">
@@ -84,6 +84,13 @@
 			layout="@layout/drawer_file"/>
 
 	</LinearLayout>
-
+	<android.support.design.widget.NavigationView
+		android:id="@+id/navigation"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:layout_gravity="start"
+		app:headerLayout="@layout/nav_header"
+		app:menu="@menu/activity_main_drawer"/>
+	
 </android.support.v4.widget.DrawerLayout>
 

@@ -158,7 +158,7 @@ public class LogViewer extends AppCompatActivity
 				}
 			});
 		lv=(NoScrollListView) findViewById(R.id.viewercontentListView1);
-		lva=new ListViewAdapter(this,data,lv,pkg,set,hb);
+		lva=new ListViewAdapter(this,data,lv,pkg,set,hb,true);
 		lv.setAdapter(lva);
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		lv.setMultiChoiceModeListener(new MultiChoiceModeListener(){

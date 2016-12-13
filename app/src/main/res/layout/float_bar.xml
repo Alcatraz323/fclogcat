@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="54dp"
+	android:orientation="horizontal"
+	android:background="@drawable/shader">
+
+	<RelativeLayout
+		android:layout_height="48dp"
+		android:layout_width="match_parent"
+		android:background="#656565"
+		android:gravity="left|center">
+
+		<ImageButton
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:src="@drawable/ic_menu_white_18dp"
+			android:id="@+id/floatbarImageButton1"
+			android:scaleType="centerInside"/>
+
+		<TextView
+			android:layout_height="match_parent"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:layout_width="match_parent"
+			android:layout_toRightOf="@id/floatbarImageButton1"
+			android:gravity="center"
+			android:id="@+id/floatbarTextView1"
+			android:textColor="#E7E7E7"/>
+
+	</RelativeLayout>
+
+</LinearLayout>
+

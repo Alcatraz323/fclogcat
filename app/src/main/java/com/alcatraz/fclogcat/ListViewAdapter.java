@@ -18,12 +18,14 @@ public class ListViewAdapter extends BaseAdapter
 	String hb_c;
 	Set<String> hl_fil;
 	SharedPreferences spf;
-	public ListViewAdapter(Context c, List<String> content, ListView lv, String pkg,Set<String> set,String h)
+	boolean hnn;
+	public ListViewAdapter(Context c, List<String> content, ListView lv, String pkg,Set<String> set,String h,boolean hbb)
 	{
 		this.content=content;
 		this.lv=lv;
 		this.pkg=pkg;
 		ctx=c;
+		hnn=hbb;
 		hb_c=h;
 		hl_fil=set;
 		lf=(LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -67,6 +69,7 @@ public class ListViewAdapter extends BaseAdapter
 				raw=raw.replace(org,i);
 			}
 		}
+		if(hnn){
 		boolean hasGotExc=false;
 			if(p1>=2&&!hasGotExc){
 				if(content.get(p1).contains("Exception")){
@@ -79,6 +82,7 @@ public class ListViewAdapter extends BaseAdapter
 				if(content.get(p1).contains("at "+pkg)){
 					txv.setBackgroundColor(Color.parseColor(hb_c));
 				}
+			}
 			}
 		txv.setText(Html.fromHtml(raw));
 		updateBackGround(p1,p2);
