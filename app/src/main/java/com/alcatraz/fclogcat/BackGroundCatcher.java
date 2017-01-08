@@ -244,8 +244,8 @@ public class BackGroundCatcher extends Service
 		}
 
 	}
-	public static Bitmap drawableToBitmap(Drawable drawable) {
-
+	public Bitmap drawableToBitmap(Drawable drawable) {
+		try{
         Bitmap bitmap = Bitmap.createBitmap(
 			drawable.getIntrinsicWidth(),
 			drawable.getIntrinsicHeight(),
@@ -256,6 +256,10 @@ public class BackGroundCatcher extends Service
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         drawable.draw(canvas);
         return bitmap;
+		}catch(Exception e){
+			Bitmap bit=BitmapFactory.decodeResource(getResources(),R.drawable.ic_alert);
+			return bit;
+		}
 	}
 	public String output(String content, String time)
 	{

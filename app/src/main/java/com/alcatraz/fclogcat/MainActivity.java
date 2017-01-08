@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
     }
 	public void udp(){
 		android.support.v7.app.AlertDialog a=new android.support.v7.app.AlertDialog.Builder(this)
-		.setTitle(getString(R.string.app_name)+"   2.0.0(pre_Fin)")
+		.setTitle(getString(R.string.app_name)+"   2.0.1(pre_Fin)")
 		.setView(R.layout.udp_ad)
 		.setPositiveButton(R.string.ad_pb,null)
 		.create();
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity
 												@Override
 												public void run()
 												{
-													if(d.equals("2.0.0(pre_Fin)")){
+													if(d.equals("2.0.1(pre_Fin)")){
 														Toast.makeText(MainActivity.this,R.string.main_check_latest,Toast.LENGTH_SHORT).show();
 													}else{
 														Toast.makeText(MainActivity.this,getString(R.string.main_check_not_latest)+"  "+d,Toast.LENGTH_SHORT).show();

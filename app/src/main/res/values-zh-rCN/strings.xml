@@ -2,7 +2,7 @@
 <resources>
 	<string name="app_name">日志记录器</string>
 	<string name="service_running">服务运行中...</string>
-	<string name="au_l_1">版本 2.0.0(pre_Fin)</string>
+	<string name="au_l_1">版本 2.0.1(pre_Fin)</string>
 	<string name="au_l_2">开发者</string>
 	<string name="au_l_2_1">主要:Alcatraz,感谢busstop12的帮助</string>
 	<string name="au_l_3">查看源码</string>

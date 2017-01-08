@@ -1,10 +1,12 @@
 package com.alcatraz.fclogcat;
 import android.util.*;
+import org.apache.http.impl.bootstrap.*;
 
 public class LogCatAnalyser
 {
 	public static String getPriority(String line)
 	{
+		
 		String result=null;
 		try{
 			String process=line.replace(" ","");

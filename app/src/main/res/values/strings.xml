@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">FC Catcher</string>
 	<string name="service_running">Service running...</string>
-	<string name="au_l_1">Version 2.0.0(pre_Fin)</string>
+	<string name="au_l_1">Version 2.0.1(pre_Fin)</string>
 	<string name="au_l_2">Developer</string>
 	<string name="au_l_2_1">Main:Alcatraz,Thanks busstop12 for help</string>
 	<string name="au_l_3">View source</string>
