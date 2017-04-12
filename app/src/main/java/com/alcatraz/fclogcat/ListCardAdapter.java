@@ -10,17 +10,22 @@ import android.widget.AdapterView.*;
 import android.os.*;
 import java.io.*;
 import android.support.v7.widget.*;
+import android.graphics.*;
 
 public class ListCardAdapter extends BaseAdapter
 {
 	List<String> keys;
 	Map<String,List<String>> data;
 	Context ctx;
-	public ListCardAdapter(Context ctx, Map<String,List<String>> data, List<String> keys)
+	Utils u;
+	String location;
+	public ListCardAdapter(Context ctx, Map<String,List<String>> data, List<String> keys,OverallOperate app)
 	{
 		this.data=data;
 		this.ctx=ctx;
 		this.keys=keys;
+		u=app.getUtilInstance();
+		location=(String) u.getPreference(Utils.PreferenceType.STRING,"location",SpfConstants.getDefaultStoragePosition());
 	}
 	@Override
 	public int getCount()
@@ -55,6 +60,10 @@ public class ListCardAdapter extends BaseAdapter
 		TextView txv=(TextView) p2.findViewById(R.id.listcardcontentTextView1);
 		ListView lv=(ListView) p2.findViewById(R.id.listcardcontentListView1);
 		CardView cv=(CardView) p2.findViewById(R.id.listcardCardView1);
+		LinearLayout llh=(LinearLayout) p2.findViewById(R.id.listcardcontentLinearLayout1);
+		if(u.getPreference(Utils.PreferenceType.STRING,"theme","blue").equals("night")){
+			llh.setBackgroundColor(ctx.getResources().getColor(R.color.nightmode_colorPrimary));
+		}
 		final LinearLayout ll=(LinearLayout) p2.findViewById(R.id.listcardLinearLayout1);
 		ll.setVisibility(View.GONE);
 		cv.setOnLongClickListener(new OnLongClickListener(){
@@ -160,7 +169,7 @@ public class ListCardAdapter extends BaseAdapter
 	public String getPath(String file_name)
 	{
 		String[] process=file_name.split(" ");
-		File dir=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/com.alcatraz.fclogcat/");
+		File dir=new File(location);
 		File[] dirs=dir.listFiles();
 		if(dirs!=null){
 			for(File i:dirs){
@@ -172,7 +181,7 @@ public class ListCardAdapter extends BaseAdapter
 		return null;
 	}
 	public void deleteAll(List<String> file){
-		File dir=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/com.alcatraz.fclogcat/");
+		File dir=new File(location);
 		File[] dirs=dir.listFiles();
 		List<String> parent=new ArrayList<String>();
 		if(dirs!=null){

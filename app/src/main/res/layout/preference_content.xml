@@ -20,6 +20,7 @@
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_c2">
+		
 		<CheckBoxPreference
 			android:key="single_noti"
 			android:title="@string/pref_c2_cb1_title"
@@ -27,20 +28,28 @@
 		<PreferenceScreen
 			android:key="hl"
 			android:title="@string/pref_c2_pcr_title"/>
-		<EditTextPreference
-			android:digits="#0123456789abcdefABCDEF"
-			android:hint="@string/pref_c2_et1_hint"
-			android:key="hb"
-			android:defaultValue="#9FA8DA"
-			android:title="@string/pref_c2_et1_title"/>
+		
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_c3">
 
 		<CheckBoxPreference
 			android:key="clean_up"
+			android:defaultValue="true"
 			android:summary="@string/pref_c3_cb1_summary"
 			android:title="@string/pref_c3_cb1_title"/>
-		
+		<CheckBoxPreference
+			android:key="no_hover"
+			android:title="@string/pref_c3_cb2_title"/>
+		<CheckBoxPreference
+			android:key="empty_panel"
+			android:summary="@string/pref_c3_cb3_summary"
+			android:title="@string/pref_c3_cb3_title"/>
+		<PreferenceScreen
+			android:key="location"
+			android:title="@string/pref_c3_et1_title"/>
+		<EditTextPreference
+			android:key="filt"
+			android:title="@string/pref_c3_et2_title"/>
 	</PreferenceCategory>
 </PreferenceScreen>

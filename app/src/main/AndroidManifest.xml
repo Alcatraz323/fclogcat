@@ -7,6 +7,7 @@
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 	<uses-permission android:name="android.permission.INTERNET"/>
     <application
+		android:name=".OverallOperate"
         android:allowBackup="true"
         android:icon="@drawable/ic_alert_md_logo"
         android:label="@string/app_name"

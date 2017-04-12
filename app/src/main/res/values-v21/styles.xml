@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-		<item name="colorPrimary">#3f51b5</item>
-		<item name="colorAccent">#3f51b5</item>
-		<item name="windowActionModeOverlay">true</item>
+<resources
+	xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+		<item name="colorPrimary">@color/default_colorPrimary</item>
+		<item name="colorAccent">@color/default_colorPrimary</item>
 	</style>
-	<style name="Night" parent="Theme.AppCompat"/>
-	<style name="CustomActionMode" parent="@style/Widget.AppCompat.ActionMode">
-		<item name="background">@color/default_colorPrimary</item>
-		<item name="height">64dp</item>
+	<style name="NightMode" parent="Theme.AppCompat.NoActionBar">
+		<item name="colorPrimary">@android:color/transparent</item>
+		<item name="colorAccent">@color/default_colorPrimary</item>
 	</style>
+	<style name="Pink" parent="Theme.AppCompat.Light.NoActionBar">
+		<item name="colorPrimary">@color/pink_colorPrimary</item>
+		<item name="colorAccent">@color/pink_colorPrimary</item>
+	</style>
+	<style name="Green" parent="Theme.AppCompat.Light.NoActionBar">
+		<item name="colorPrimary">@color/green_colorPrimary</item>
+		<item name="colorAccent">@color/green_colorPrimary</item>
+	</style>
+	<style name="Yellow" parent="Theme.AppCompat.Light.NoActionBar">
+		<item name="colorPrimary">@color/yellow_colorPrimary</item>
+		<item name="colorAccent">@color/yellow_colorPrimary</item>
+	</style>
+	<style name="AddBlue" parent="Theme.AppCompat.Light.NoActionBar">
+		<item name="colorPrimary">@color/addedblue_colorPrimary</item>
+		<item name="colorAccent">@color/addedblue_colorPrimary</item>
+	</style>
+	<style name="UMR" parent="Theme.AppCompat.Light.NoActionBar">
+		<item name="colorPrimary">@color/umr_colorPrimary</item>
+		<item name="colorAccent">@color/umr_colorPrimary</item>
+	</style>
+	<style name="ToolbarPopupTheme" parent="Theme.AppCompat">
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+    </style>
+
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+    </style>
+	
 </resources>

@@ -32,7 +32,7 @@
 			</LinearLayout>
 
 			<android.support.v7.widget.Toolbar
-				android:theme="@style/Night"
+				android:theme="@style/ToolbarPopupTheme"
 				android:id="@+id/mytoolbar_1"
 				android:layout_width="match_parent"
 				app:layout_scrollFlags="scroll|exitUntilCollapsed"

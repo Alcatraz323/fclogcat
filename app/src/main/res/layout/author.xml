@@ -8,7 +8,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 		<android.support.v7.widget.Toolbar
-			android:theme="@style/Night"
+			android:theme="@style/ToolbarPopupTheme"
 			android:id="@+id/mytoolbar_1"
 			app:title="@string/main_menu_2"
 			android:background="@android:color/transparent"

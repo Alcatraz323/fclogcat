@@ -3,9 +3,9 @@
     <item
         android:id="@+id/act_item1"
 		android:icon="@drawable/ic_content_copy"
-        android:title="复制"/>
+        android:title="@string/actionmode_1"/>
     <item
 		android:id="@+id/act_item2"
-		android:title="分享"
+		android:title="@string/actionmode_2"
 		android:icon="@drawable/ic_share_variant_white_24dp"/>
 </menu>

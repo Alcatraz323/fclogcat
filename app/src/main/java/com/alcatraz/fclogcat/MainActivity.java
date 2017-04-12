@@ -16,9 +16,6 @@ import com.alcatraz.support.v4.appcompat.*;
 import android.support.design.widget.*;
 import android.view.View.*;
 import android.net.*;
-import org.jsoup.*;
-import org.jsoup.nodes.*;
-import org.jsoup.select.*;
 import android.util.*;
 import android.support.v4.content.*;
 import android.*;
@@ -26,7 +23,7 @@ import android.content.pm.*;
 import android.support.v4.app.*;
 import android.provider.*;
 
-public class MainActivity extends AppCompatActivity 
+public class MainActivity extends ThemedActivity 
 {
 	public static String ACTION_TAG="LogCatService";
 	List<String> parent = new ArrayList<String>();;
@@ -38,8 +35,12 @@ public class MainActivity extends AppCompatActivity
 	LinearLayout emp_2;
 	innerRec rec=new innerRec();
 	AppBarLayout abl;
+	String location;
 	View v;
 	FrameLayout fl;
+	UpdateThemeReceiver utr;
+	LinearLayout ll3;
+	ImageView imgvp;
 	SwipeRefreshLayout srl;
 	LinkedList<String> data=new LinkedList<String>();
 	List<String> card_data_key=new ArrayList<String>();
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity
 	ExpandableAdapter file_adp;
 	Map<String,List<String>> card_data=new HashMap<String,List<String>>();
 	Map<Integer,String> selected=new HashMap<Integer,String>();
-	
+	public static final String THEME_ACTION="t";
 	Thread t;
 	/*____输出参数______*/
 	String file_buffer;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity
     {
 		SharedPreferences spf=getSharedPreferences(getPackageName()+"_preferences",MODE_PRIVATE);
 		ce=spf.getBoolean("ce",false);
+		location=spf.getString("location",SpfConstants.getDefaultStoragePosition());
 		udph=spf.getBoolean("Upd_1.6.0",false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity
 			udp();
 		}
 		regist();
+		regist1();
 		if(!isServiceRunning_1()){
 			startService(new Intent(this,FloatService.class));
 		}
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity
     }
 	public void udp(){
 		android.support.v7.app.AlertDialog a=new android.support.v7.app.AlertDialog.Builder(this)
-		.setTitle(getString(R.string.app_name)+"   2.0.1(pre_Fin)")
+		.setTitle(getString(R.string.app_name)+"   2.1.1(Final)")
 		.setView(R.layout.udp_ad)
 		.setPositiveButton(R.string.ad_pb,null)
 		.create();
@@ -195,9 +198,12 @@ public class MainActivity extends AppCompatActivity
 		elv = (ExpandableListView) findViewById(R.id.drawerfileExpandableListView1);
 		lv = (ListView) findViewById(R.id.mainListView1);
 		abl = (AppBarLayout) findViewById(R.id.mainAppBarLayout1);
-		lca = new ListCardAdapter(this, card_data, card_data_key);
+		ll3=(LinearLayout) findViewById(R.id.mainLinearLayout2);
+		lca = new ListCardAdapter(this, card_data, card_data_key,(OverallOperate)getApplication());
 		lv.setAdapter(lca);
 		ngv = (NavigationView) findViewById(R.id.navigation);
+		imgvp=(ImageView) ngv.getHeaderView(0).findViewById(R.id.navheaderImageView1);
+		
 		ngv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
 
 				@Override
@@ -205,50 +211,11 @@ public class MainActivity extends AppCompatActivity
 				{
 					switch (p1.getItemId())
 					{
-						case R.id.nav_support_1_1:
-							startActivity(new Intent(MainActivity.this,MTerminal.class));
-							break;
+						
 						case R.id.nav_support_1_2:
 							startActivity(new Intent(MainActivity.this, Preferences.class));
 							break;
-						case R.id.nav_support_2_1:
-							android.support.v7.app.AlertDialog a=new android.support.v7.app.AlertDialog.Builder(MainActivity.this)
-								.setTitle(R.string.main_drawer_2)
-								.setMessage(getString(R.string.main_report_bug) + "\n" + "Alcatraz32323@gmail.com" + "\n" + "14468181457@qq.com")
-								.setPositiveButton(R.string.ad_pb, null)
-								.create();
-							new AlertDialogUtil().setSupportDialogColor(a, Color.parseColor("#3f51b5"));
-							a.show();
-							break;
-						case R.id.nav_support_2_2:
-							getVersion(new versioncallback(){
-
-									@Override
-									public void c(final String d)
-									{
-										runOnUiThread(new Runnable(){
-
-												@Override
-												public void run()
-												{
-													if(d.equals("2.0.1(pre_Fin)")){
-														Toast.makeText(MainActivity.this,R.string.main_check_latest,Toast.LENGTH_SHORT).show();
-													}else{
-														Toast.makeText(MainActivity.this,getString(R.string.main_check_not_latest)+"  "+d,Toast.LENGTH_SHORT).show();
-														String str = "market://details?id=" + getPackageName();
-														Intent localIntent = new Intent("android.intent.action.VIEW");
-														localIntent.setData(Uri.parse(str));
-														startActivity(localIntent);
-													}
-													t.interrupt();
-													// TODO: Implement this method
-												}
-											});
-										
-										// TODO: Implement this method
-									}
-								});
-							break;
+						
 						case R.id.nav_support_2_3:
 							startActivity(new Intent(MainActivity.this, Author.class));
 							break;
@@ -280,7 +247,7 @@ public class MainActivity extends AppCompatActivity
 		file_adp = new ExpandableAdapter(this, parent, map);
 		elv.setAdapter(file_adp);
 		setSupportActionBar(tb);
-		new DrawerLayoutUtil().setImmersiveToolbarWithDrawer(tb, dl, this, v, "#3f51b5", Build.VERSION.SDK_INT);
+		setupMaterialWithDrawer(dl,tb,v);
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
 		{
 			v.setVisibility(View.GONE);
@@ -303,6 +270,7 @@ public class MainActivity extends AppCompatActivity
 		file_adp.notifyDataSetChanged();
 		lca.notifyDataSetChanged();
 	}
+	/*
 	public void getVersion(final versioncallback ch){
 		 t=new Thread(new Runnable(){
 
@@ -342,10 +310,11 @@ public class MainActivity extends AppCompatActivity
 	private interface versioncallback{
 		public void c(String d);
 	}
+	*/
 	public void initData()/*drawerlayout的文件列表加载*/
 	{
 		parent.clear();
-		File dir=new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.alcatraz.fclogcat/");
+		File dir=new File(location);
 		File[] dirs=dir.listFiles();
 		if (dirs != null)
 		{
@@ -373,12 +342,18 @@ public class MainActivity extends AppCompatActivity
 
 		}
 	}
-
+	public void regist1(){
+		IntentFilter ifil=new IntentFilter();
+		ifil.addAction(THEME_ACTION);
+		utr=new UpdateThemeReceiver();
+		registerReceiver(utr,ifil);
+	}
 	public void init_main_card_list()
 	{
 		card_data_key.clear();
 		card_data.clear();
-		File dir=new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.alcatraz.fclogcat/");
+		try{
+		File dir=new File(location);
 		File[] dirs=dir.listFiles();
 		if (dirs != null)
 		{
@@ -424,6 +399,9 @@ public class MainActivity extends AppCompatActivity
 				}
 			}
 		}
+		}catch(Exception e){
+			
+		}
 	}
 	@Override
 	protected void onDestroy()
@@ -435,6 +413,7 @@ public class MainActivity extends AppCompatActivity
 			sendBroadcast(new Intent().setAction(BackGroundCatcher.SHUTDOWN_TAG));
 		}
 		unregisterReceiver(rec);
+		unregisterReceiver(utr);
 	}
 	public void regist()
 	{
@@ -466,35 +445,7 @@ public class MainActivity extends AppCompatActivity
 	    }
 	    return false;
 	}
-	public void output(String content, String time)
-	{
-		/*根据日期输出，你可以写你要的输出*/
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-		Date curDate = new Date(System.currentTimeMillis());
-		String str = formatter.format(curDate);
-		File root=new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.alcatraz.fclogcat/");
-		File data_dir=new File(root.getPath() + "/" + str.split(" ")[0] + "/");
-		data_dir.mkdirs();
-		File data_file=new File(data_dir.getPath() + "/" + time + ".log");
-		if (!data_file.exists())
-		{
-			try
-			{
-				data_file.createNewFile();
-				FileOutputStream fos=new FileOutputStream(data_file);
-				fos.write(content.getBytes());
-				fos.close();
-			}
-			catch (IOException e)
-			{}
-		}
-		else
-		{
-
-		}
-		initData();
-		file_adp.notifyDataSetChanged();
-	}
+	
 	class innerRec extends BroadcastReceiver
 	{
 		@Override
@@ -503,5 +454,18 @@ public class MainActivity extends AppCompatActivity
 			ref();
 			// TODO: Implement this method
 		}
+	}
+	class UpdateThemeReceiver extends BroadcastReceiver
+	{
+
+		@Override
+		public void onReceive(Context p1, Intent p2)
+		{
+			finish();
+			startActivity(new Intent(MainActivity.this,MainActivity.class));
+			// TODO: Implement this method
+		}
+
+
 	}
 }

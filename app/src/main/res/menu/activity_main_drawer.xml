@@ -2,10 +2,7 @@
     
     <item android:title="@string/main_drawer_1_t">
         <menu>
-            <item
-                android:id="@+id/nav_support_1_1"
-                android:icon="@drawable/ic_flag_checkered"
-                android:title="@string/main_drawer_1"/>
+           
 			<item
                 android:id="@+id/nav_support_1_2"
                 android:icon="@drawable/ic_settings_white_24dp"
@@ -14,14 +11,6 @@
     </item>
 	<item android:title="@string/main_drawer_2_t">
         <menu>
-            <item
-                android:id="@+id/nav_support_2_1"
-                android:icon="@drawable/ic_bug"
-                android:title="@string/main_drawer_2"/>
-			<item
-                android:id="@+id/nav_support_2_2"
-                android:icon="@drawable/ic_upload"
-                android:title="@string/main_drawer_3"/>
 			<item
                 android:id="@+id/nav_support_2_3"
                 android:icon="@drawable/ic_information_outline"

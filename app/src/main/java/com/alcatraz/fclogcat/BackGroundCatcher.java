@@ -17,6 +17,8 @@ import java.util.*;
 import android.graphics.drawable.*;
 import java.net.*;
 import android.support.v4.content.*;
+import android.util.*;
+import android.support.v7.app.*;
 
 public class BackGroundCatcher extends Service
 {
@@ -33,14 +35,23 @@ public class BackGroundCatcher extends Service
 	Noroottagrec nrc;
 	SharedPreferences spf;
 	LogCat l;
+	String location;
+	String filt;
 	boolean packageget=false;
 	int id=0;
-	
+	/*______NDK TRACE********/
+	boolean ndk1=false;
+	String ndk_buffer="";
+	String ndk_time;
+	String ndk_pkg;
+	boolean ndk_pkg_idifi=false;
 	/*spf         */
 	boolean boot;
 	boolean clean_up;
 	boolean stic_noti;
 	boolean single_noti;
+	boolean no_hover;
+	boolean empty_panel;
 	@Override
 	public IBinder onBind(Intent p1)
 	{
@@ -53,6 +64,10 @@ public class BackGroundCatcher extends Service
 		stic_noti = spf.getBoolean("stic_noti", false);
 		single_noti = spf.getBoolean("single_noti", false);
 		clean_up=spf.getBoolean("clean_up",false);
+		filt=spf.getString("filt","");
+		no_hover=spf.getBoolean("no_hover",false);
+		empty_panel=spf.getBoolean("empty_panel",false);
+		location=spf.getString("location",SpfConstants.getDefaultStoragePosition());
 	}
 	@Override
 	public void onCreate()
@@ -97,14 +112,15 @@ public class BackGroundCatcher extends Service
 		PendingIntent P2=PendingIntent.getBroadcast(this,0,i2,0);
 		Notification.Builder nb=new Notification.Builder(this)
 			.setContentIntent(pendingIntent)
-			.setAutoCancel(true)
+			.setPriority(Notification.PRIORITY_MIN)
+			.setOngoing(true)
+			.setSmallIcon(R.drawable.ic_alert)
 			.setVibrate(new long[]{2,2})
 			.addAction(R.drawable.ic_power_grey600_24dp,getString(R.string.main_menu_4),P2)
 			.setContentText(getString(R.string.service_running))
-			.setSmallIcon(R.drawable.ic_alert)
 			.setContentTitle(getString(R.string.app_name));
 		Notification n=nb.build();
-		n.flags = n.FLAG_NO_CLEAR;
+		n.priority=Notification.PRIORITY_MIN;
 		manager.notify(Integer.MAX_VALUE, n);
 	}
 
@@ -135,11 +151,59 @@ public class BackGroundCatcher extends Service
 				@Override
 				public void onUpdate(final String p1)
 				{
-
+					if(LogCatAnalyser.isNativeCrash(p1)){
+						if(ndk1){
+							ndk_buffer=ndk_buffer+"\n"+p1;
+						}
+						
+						if(ndk_pkg_idifi){
+							if(p1.contains("pid")){
+								ndk_pkg=LogCatAnalyser.getNDKPackage(p1);
+								ndk_pkg_idifi=false;
+							}
+						}
+						if(LogCatAnalyser.isNDKCrashStart(p1)){
+							ndk1=true;
+							ndk_pkg_idifi=true;
+							ndk_buffer=p1;
+							ndk_time=LogCatAnalyser.getTime(p1);
+						}
+					}else{
+						if(ndk1){
+							
+							if(ndk_pkg!=null&&ndk_time!=null&&ndk_buffer!=null){
+								if(filt.contains(ndk_pkg)){
+									ndk1=false;
+									ndk_pkg=null;
+									ndk_time=null;
+									ndk_buffer=null;
+									ndk_pkg_idifi=false;
+									return;
+								}else{
+								ndk_time=ndk_time+" "+ndk_pkg;
+								notification(output(ndk_buffer,ndk_time,true));
+								if(clean_up){
+									try
+									{
+										Runtime.getRuntime().exec("su -c logcat -c");
+									}
+									catch (IOException e)
+									{}
+								}
+								}
+							}
+							ndk1=false;
+							ndk_pkg=null;
+							ndk_time=null;
+							ndk_buffer=null;
+							ndk_pkg_idifi=false;
+							
+						}
+					}
 					if (LogCatAnalyser.isCrash(p1))
-					{//是否来自AndroidRuntime E等级
+					{
 						if (record)
-						{//记录
+						{
 							file_buffer = file_buffer + p1 + "\n";
 						}
 						if (packageget)
@@ -148,7 +212,7 @@ public class BackGroundCatcher extends Service
 							packageget = false;
 						}
 						if (LogCatAnalyser.isCrashStart(p1))
-						{//开始记录调用
+						{
 							file_buffer = p1 + "\n";
 							record = true;
 							packageget = true;
@@ -158,16 +222,20 @@ public class BackGroundCatcher extends Service
 					}
 					else
 					{
-						//结束单次错误，并以日期形式输出
+						
 						record = false;
-						if (file_buffer != null && time_file != null)
+						if (file_buffer != null && time_file != null&&packagen!=null)
 						{
+							if(filt.contains(packagen)){
+								file_buffer = null;
+								packageget = false;
+								time_file = null;
+								packagen = null;
+								
+							}else{
 							time_file = time_file + " " + packagen;
-							notification(output(file_buffer, time_file));
-							file_buffer = null;
-							packageget = false;
-							time_file = null;
-							packagen = null;
+							notification(output(file_buffer, time_file,false));
+							
 							if(clean_up){
 								try
 								{
@@ -176,7 +244,12 @@ public class BackGroundCatcher extends Service
 								catch (IOException e)
 								{}
 							}
+							}
 						}
+						file_buffer = null;
+						packageget = false;
+						time_file = null;
+						packagen = null;
 					}
 					// TODO: Implement this method
 
@@ -227,7 +300,6 @@ public class BackGroundCatcher extends Service
 			PendingIntent p4=PendingIntent.getBroadcast(this,id,ijj,PendingIntent.FLAG_UPDATE_CURRENT);
 			PendingIntent pendingIntent = PendingIntent.getActivity(this, id, i, PendingIntent.FLAG_UPDATE_CURRENT);
 			Notification.Builder nb=new Notification.Builder(this)
-				.setContentIntent(pendingIntent)
 				.setAutoCancel(true)
 				.setVibrate(new long[]{2,2})
 				.setContentText(dir)
@@ -236,8 +308,14 @@ public class BackGroundCatcher extends Service
 				.setContentTitle(getLabel(getPkg(new File(dir).getName())))
 				.addAction(R.drawable.ic_share_variant_grey600_24dp,getString(R.string.notification_1),p3)
 				.addAction(R.drawable.ic_delete_grey600_24dp,getString(R.string.notification_2),p2)
-				.addAction(R.drawable.ic_flash_grey600_24dp,getString(R.string.notification_3),p4)
-				.setFullScreenIntent(pendingIntent, true);
+				.addAction(R.drawable.ic_flash_grey600_24dp,getString(R.string.notification_3),p4);
+				if(!no_hover){
+					Log.e("Alc",""+no_hover);
+					nb.setFullScreenIntent(pendingIntent, true);
+				}
+				if(!empty_panel){
+					nb.setContentIntent(pendingIntent);
+				}
 			Notification n=nb.build();
 			manager.notify(id, n);
 			
@@ -261,16 +339,21 @@ public class BackGroundCatcher extends Service
 			return bit;
 		}
 	}
-	public String output(String content, String time)
+	public String output(String content, String time,boolean na)
 	{
 		/*根据日期输出，你可以写你要的输出*/
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 		Date curDate = new Date(System.currentTimeMillis());
 		String str = formatter.format(curDate);
-		File root=new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.alcatraz.fclogcat/");
+		File root=new File(location);
 		File data_dir=new File(root.getPath() + "/" + str.split(" ")[0] + "/");
 		data_dir.mkdirs();
-		File data_file=new File(data_dir.getPath() + "/" + time + ".log");
+		File data_file;
+		if(!na){
+		data_file=new File(data_dir.getPath() + "/" + time + ".log");
+		}else{
+			data_file=new File(data_dir.getPath() + "/" + time + ".nativelog");
+		}
 		if (!data_file.exists())
 		{
 			try

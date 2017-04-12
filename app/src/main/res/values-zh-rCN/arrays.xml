@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="entries_list_preference">
+        <item>蓝色</item>
+        <item>黄色</item>
+        <item>粉色</item>  
+		<item>绿色</item>
+		<item>天依蓝</item>
+		<item>小埋色</item>
+		<item>夜间模式</item>
+		<item>自定义</item>
+    </string-array>
+
+    <!-- Used in app/menu examples -->
+    <string-array name="entryvalues_list_preference">
+        <item>blue</item>
+        <item>yellow</item>
+        <item>pink</item>  
+		<item>green</item>
+		<item>addedblue</item>
+		<item>umr</item>
+		<item>night</item>
+		<item>cus</item>
+    </string-array>
+</resources>

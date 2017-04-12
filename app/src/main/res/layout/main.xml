@@ -34,7 +34,7 @@
 					android:background="#3f51b5"
 					android:layout_width="match_parent"
 					android:id="@+id/mainToolbar1"
-					android:theme="@style/Night"
+					android:theme="@style/ToolbarPopupTheme"
 					android:layout_height="?attr/actionBarSize">
 
 				</android.support.v7.widget.Toolbar>
@@ -78,12 +78,14 @@
 		android:layout_gravity="right"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="#FFFFFF">
+		android:background="#FFFFFF"
+		android:id="@+id/mainLinearLayout2">
 
 		<include
 			layout="@layout/drawer_file"/>
 
 	</LinearLayout>
+
 	<android.support.design.widget.NavigationView
 		android:id="@+id/navigation"
 		android:layout_width="wrap_content"
@@ -91,6 +93,6 @@
 		android:layout_gravity="start"
 		app:headerLayout="@layout/nav_header"
 		app:menu="@menu/activity_main_drawer"/>
-	
+
 </android.support.v4.widget.DrawerLayout>
 

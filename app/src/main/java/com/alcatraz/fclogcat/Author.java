@@ -12,13 +12,15 @@ import android.content.*;
 import android.net.*;
 import com.alcatraz.support.v4.appcompat.*;
 import android.graphics.*;
+import android.support.design.widget.*;
 
-public class Author extends AppCompatActivity
+public class Author extends ThemedActivity
 {
 	List<Integer> imgs=new ArrayList<Integer>();
 	Map<Integer,List<String>> data=new HashMap<Integer,List<String>>();
 	ListView lv;
 	android.support.v7.widget.Toolbar tb;
+	AppBarLayout abl;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -31,7 +33,7 @@ public class Author extends AppCompatActivity
 	public void showDetailDev(){
 		android.support.v7.app.AlertDialog g=new android.support.v7.app.AlertDialog.Builder(this)
 		.setTitle(R.string.au_l_2)
-		.setMessage("主代码:Alcatraz\n应用图标:busstop12\nShortcuts图标:busstop12\n简体中文:Alcatraz\n英文:Alcatraz\n繁体中文:busstop12\n感谢busstop12的帮助,同时向以下开发者致敬\n\n~Jsoup.Org\n~Github.Jaeger")
+		.setMessage("主代码:Alcatraz\n应用图标:busstop12\nShortcuts图标:busstop12\n简体中文:Alcatraz\n英文:Alcatraz\n繁体中文:busstop12\n感谢busstop12的帮助")
 		.setPositiveButton(R.string.ad_pb,null)
 		.create();
 		new AlertDialogUtil().setSupportDialogColor(g,Color.parseColor("#3f51b5"));
@@ -56,7 +58,8 @@ public class Author extends AppCompatActivity
 		setSupportActionBar(tb);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		StatusBarUtil.setColor(this, Color.parseColor("#3f51b5"));
+		abl=(AppBarLayout) findViewById(R.id.appbar);
+		setupStaticColorPadding(rgb);
 		lv = (ListView) findViewById(R.id.authorcontentListView1);
 		AuthorAdapter aa=new AuthorAdapter(this, data, imgs);
 		lv.setAdapter(aa);

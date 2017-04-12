@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="entries_list_preference">
+        <item>Blue</item>
+        <item>Yellow</item>
+        <item>Pink</item>  
+		<item>Green</item>
+		<item>Added Blue</item>
+		<item>UMR</item>
+		<item>Night</item>
+		<item>Custom</item>
+    </string-array>
+
+    <string-array name="entryvalues_list_preference">
+        <item>blue</item>
+        <item>yellow</item>
+        <item>pink</item>  
+		<item>green</item>
+		<item>addedblue</item>
+		<item>umr</item>
+		<item>night</item>
+		<item>cus</item>
+    </string-array>
+</resources>

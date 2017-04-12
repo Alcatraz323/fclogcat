@@ -2,7 +2,7 @@
 <resources>
 	<string name="app_name">日志记录器</string>
 	<string name="service_running">服务运行中...</string>
-	<string name="au_l_1">版本 2.0.1(pre_Fin)</string>
+	<string name="au_l_1">版本 2.1.1(Final)</string>
 	<string name="au_l_2">开发者</string>
 	<string name="au_l_2_1">主要:Alcatraz,感谢busstop12的帮助</string>
 	<string name="au_l_3">查看源码</string>
@@ -22,8 +22,14 @@
 	<string name="pref_c2_et1_title">高亮条目背景</string>
 	<string name="pref_c2_et1_hint">RGB(A)颜色,#xxxxxx</string>
 	<string name="pref_c3">执行</string>
+	<string name="pref_c3_et1_title">自定义路径...</string>
+	<string name="pref_c3_et1_error">无效路径</string>
+	<string name="pref_c3_et2_title">包名过滤(逗号分割)</string>
 	<string name="pref_c3_cb1_title">清理缓冲</string>
 	<string name="pref_c3_cb1_summary">每一次记录后执行logcat -c</string>
+	<string name="pref_c3_cb2_title">禁用浮动通知</string>
+	<string name="pref_c3_cb3_title">空白通知</string>
+	<string name="pref_c3_cb3_summary">点击通知区域不会跳转</string>
 	<string name="pref_apply">退出时生效</string>
 	<string name="pref_no_file_chooser">无文件管理器</string>
 	<string name="already_start">服务已经启动</string>
@@ -91,7 +97,21 @@
 	<string name="setup_4_1">导入文件</string>
 	<string name="setup_4_2">添加...</string>
 	<string name="setup_4_3">html标签,如&lt;font color=&quot;#3f51b5&quot;&gt;高亮过滤内容&lt;/font&gt;</string>
-	
+	<string name="pref_cat_1_list_1">主题</string>
+	<string name="pref_cus">自定义...</string>
+	<string name="pref_cus_hint">RGB颜色(#xxxxxx)</string>
+	<string name="pref_cus_error">无效颜色</string>
+	<string name="ad_pb1">确定</string>
+	<string name="ad_nb1">取消</string>
+	<string name="ad_pb2">是</string>
+	<string name="ad_nb2">否</string>
+	<string name="file_pick_1">选择路径</string>
+	<string name="file_pick_2">选择文件</string>
+	<string name="file_pick_3">路径:</string>
+	<string name="file_pick_4">存储空间</string>
+	<string name="file_pick_5">请使用空目录作为保存位置或确保文件夹内无其他形式的文件(夹)</string>
+	<string name="file_pick_6">新建</string>
+	<string name="file_pick_7">重启中...</string>
 	<!-- Version 1.6.0 update log-->
 	<string name="setup_title_5">权限</string>
 	<string name="setup_title_6">更新日志</string>
@@ -102,9 +122,9 @@
 	<string name="u_5">5.更改targetApi,对23及以上改用动态获取权限</string>
 	<string name="u_6">6.简易终端功能</string>
 	<string name="u_7">7.主页面改为双抽屉(时间文件列表改为右侧抽屉)</string>
-	<string name="u_8">8.基于Jsoup的更新检查</string>
-	<string name="u_9">9.更多Material元素</string>
-	<string name="u_10">10.图标变更</string>
+	<string name="u_8">8.Native错误抓取</string>
+	<string name="u_9">9.夜间模式</string>
+	<string name="u_10">10.自定义目录</string>
 	<string name="u_11">11.增加对每次记录清除logcat缓冲的选项</string>
 	<string name="u_12">12.增加英语和繁体中文语言(自切)</string>
 	<string name="u_13">13.UI/Bug fixes.</string>

@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">FC Catcher</string>
 	<string name="service_running">Service running...</string>
-	<string name="au_l_1">Version 2.0.1(pre_Fin)</string>
+	<string name="au_l_1">Version 2.1.1(Final)</string>
 	<string name="au_l_2">Developer</string>
 	<string name="au_l_2_1">Main:Alcatraz,Thanks busstop12 for help</string>
 	<string name="au_l_3">View source</string>
@@ -22,8 +22,14 @@
 	<string name="pref_c2_et1_title">Highlight for line</string>
 	<string name="pref_c2_et1_hint">RGB(A) color,#xxxxxx</string>
 	<string name="pref_c3">Run</string>
+	<string name="pref_c3_et1_title">Custom Directory...</string>
+	<string name="pref_c3_et1_error">Invalid directory</string>
+	<string name="pref_c3_et2_title">PackageFilter(split by quot)</string>
 	<string name="pref_c3_cb1_title">Do clean up</string>
 	<string name="pref_c3_cb1_summary">Run logcat -c after fc occured</string>
+	<string name="pref_c3_cb2_title">No hovering notification</string>
+	<string name="pref_c3_cb3_title">Empty Notification Panel</string>
+	<string name="pref_c3_cb3_summary">No Activity starts after click the notification panel</string>
 	<string name="pref_apply">It will be applied when you exit this Activity</string>
 	<string name="pref_no_file_chooser">No file chooser</string>
 	<string name="already_start">Service already running</string>
@@ -91,7 +97,21 @@
 	<string name="setup_4_1">Input from file</string>
 	<string name="setup_4_2">Add...</string>
 	<string name="setup_4_3">Html node</string>
-	
+	<string name="pref_cat_1_list_1">Theme</string>
+	<string name="pref_cus">Custom...</string>
+	<string name="pref_cus_hint">RGB Color(#xxxxxx)</string>
+	<string name="pref_cus_error">Invalid color</string>
+	<string name="ad_pb1">Ok</string>
+	<string name="ad_nb1">Canel</string>
+	<string name="ad_pb2">Yes</string>
+	<string name="ad_nb2">No</string>
+	<string name="file_pick_1">Choose Directory</string>
+	<string name="file_pick_2">Choose File</string>
+	<string name="file_pick_3">Folder:</string>
+	<string name="file_pick_4">Storage</string>
+	<string name="file_pick_5">Please use an empty folder or used to place logs</string>
+	<string name="file_pick_6">New Folder</string>
+	<string name="file_pick_7">Restarting</string>
 	<!-- Version 1.6.0 update log-->
 	<string name="setup_title_5">Permissions</string>
 	<string name="setup_title_6">Update Log</string>
@@ -102,9 +122,9 @@
 	<string name="u_5">5.Changed targetApi,use permission request above Api23</string>
 	<string name="u_6">6.Simple Terminal</string>
 	<string name="u_7">7.Double Drawer(File list changed to right side)</string>
-	<string name="u_8">8.Check Update(Based on Jsoup)</string>
-	<string name="u_9">9.More Material Design Elements</string>
-	<string name="u_10">10.Icon changed</string>
+	<string name="u_8">8.Native Exception</string>
+	<string name="u_9">9.NightMode</string>
+	<string name="u_10">10.Custom save directory</string>
 	<string name="u_11">11.Added run logcat -c after caught crash(Preference,Default off)</string>
 	<string name="u_12">12.Added language zh-rCN,zh-rTW</string>
 	<string name="u_13">13.UI/Bug fixes.</string>

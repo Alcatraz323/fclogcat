@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:layout_width="match_parent"
+	android:orientation="vertical">
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+
+		<LinearLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:background="#D9D9D9"
+			android:gravity="left|center">
+
+			<ImageButton
+				style="?android:attr/buttonBarButtonStyle"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:src="@drawable/ic_chevron_left"
+				android:id="@+id/filepickImageButton1"/>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="vertical">
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceSmall"
+					android:layout_width="wrap_content"
+					android:text="@string/file_pick_1"
+					android:layout_marginLeft="16dp"
+					android:layout_marginTop="16dp"
+					android:textColor="#000000"
+					android:id="@+id/filepickTextView1"/>
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:layout_width="wrap_content"
+					android:layout_marginLeft="16dp"
+					android:layout_marginBottom="16dp"
+					android:textColor="#000000"
+					android:id="@+id/filepickTextView2"/>
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+		<ListView
+			android:layout_height="325dp"
+			android:layout_width="match_parent"
+			android:id="@+id/filepickListView1"/>
+
+		<LinearLayout
+			style="?android:attr/buttonBarStyle"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:background="#D9D9D9"
+			android:gravity="bottom|right">
+
+			<Button
+				android:textAllCaps="false"
+				style="?android:attr/buttonBarButtonStyle"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:text="@string/ad_nb"
+				android:id="@+id/filepickButton1"/>
+
+			<Button
+				style="?android:attr/buttonBarButtonStyle"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:text="@string/file_pick_6"
+				android:id="@+id/filepickButton3"/>
+
+			<Button
+				android:textAllCaps="false"
+				style="?android:attr/buttonBarButtonStyle"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:id="@+id/filepickButton2"
+				android:layout_marginRight="16dp"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</LinearLayout>
+

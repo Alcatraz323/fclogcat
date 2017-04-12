@@ -6,6 +6,12 @@
 	android:orientation="horizontal"
 	android:gravity="center">
 
+	<ImageView
+		android:layout_height="24dp"
+		android:layout_width="24dp"
+		android:src="@drawable/ic_star"
+		android:id="@+id/listboardImageView1"/>
+
 	<TextView
 		android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceSmall"

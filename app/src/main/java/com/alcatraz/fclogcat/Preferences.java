@@ -21,22 +21,43 @@ public class Preferences extends PreferenceActivity
 {
 	android.support.v7.widget.Toolbar tb;
 	PreferenceScreen ps;
-	EditTextPreference etp;
+	PreferenceScreen ps1;
+	EditTextPreference etp2;
+	SharedPreferences spf;
+	List<File> files;
+	File current;
+	Map<String,List<String>> card_data=new HashMap<String,List<String>>();
+	List<String> card_data_key=new ArrayList<String>();
+	SharedPreferences.Editor edit;
+	Map<String, List<String>> map = new HashMap<String,List<String>>();
+	List<String> parent = new ArrayList<String>();;
+	String theme;
+	OverallOperate app;
+	Utils u;
 	CheckBoxPreference cbp;
+	int rgb;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		app = (OverallOperate) getApplication();
+		u = app.getUtilInstance();
+		
 		// TODO: Implement this method
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preference);
+		
 		addPreferencesFromResource(R.layout.preference_content);
 		initPref();
+		findPreferences();
+		StatusBarUtil.setColor(this,getResources().getColor(R.color.default_colorPrimary));
 	}
 	public void initPref()
 	{
-		SharedPreferences spf=getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
+		spf=getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
+		edit=spf.edit();
 		tb = (android.support.v7.widget.Toolbar) findViewById(R.id.preferenceToolbar1);
 		tb.setTitle(R.string.main_menu_1);
+		tb.setBackgroundColor(rgb);
 		tb.setNavigationOnClickListener(new OnClickListener(){
 
 				@Override
@@ -46,8 +67,9 @@ public class Preferences extends PreferenceActivity
 					// TODO: Implement this method
 				}
 			});
-		StatusBarUtil.setColor(this, Color.parseColor("#3f51b5"));
+		
 		ps = (PreferenceScreen) findPreference("hl");
+		ps1=(PreferenceScreen) findPreference("location");
 		ps.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
 
 				@Override
@@ -58,35 +80,17 @@ public class Preferences extends PreferenceActivity
 					return true;
 				}
 			});
-		etp = (EditTextPreference) findPreference("hb");
-		etp.setSummary(spf.getString("hb", "#9FA8DA"));
-		etp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
+		ps1.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
 
 				@Override
-				public boolean onPreferenceChange(Preference p1, Object p2)
+				public boolean onPreferenceClick(Preference p1)
 				{
-					try
-					{
-						Color.parseColor(etp.getEditText().getText().toString());
-					}
-					catch (Exception e)
-					{
-						Snackbar.make(getWindow().getDecorView(), R.string.setup_3_2, Snackbar.LENGTH_LONG)
-							.setAction(R.string.ad_pb, new OnClickListener(){
-
-								@Override
-								public void onClick(View p1)
-								{
-									// TODO: Implement this method
-								}
-							}).show();
-						return false;
-					}
-					etp.setSummary(etp.getEditText().getText().toString());
+					showFilePick(new File(spf.getString("location",SpfConstants.getDefaultStoragePosition())));
 					// TODO: Implement this method
 					return true;
 				}
 			});
+			ps1.setSummary(spf.getString("location",SpfConstants.getDefaultStoragePosition()));
 		cbp = (CheckBoxPreference) findPreference("stic_noti");
 		cbp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
 
@@ -354,5 +358,204 @@ public class Preferences extends PreferenceActivity
 	public interface add
 	{
 		public void onInputComplete(String d);
+	}
+	public void findPreferences()
+	{
+		StatusBarUtil.setColor(this, rgb);
+		
+	}
+	public void updateSummary(String key, String defaulth, Preference v)
+	{
+		v.setSummary(u.getPreference(Utils.PreferenceType.STRING, key, defaulth));
+	}
+	public void showFilePick(File c){
+		files=new LinkedList<File>();
+		current=c;
+		View root=getLayoutInflater().inflate(R.layout.file_pick,null);
+		ListView lv=(ListView) root.findViewById(R.id.filepickListView1);
+		Button btn_1=(Button) root.findViewById(R.id.filepickButton1);
+		final Button btn_2=(Button) root.findViewById(R.id.filepickButton2);
+		ImageButton ib=(ImageButton) root.findViewById(R.id.filepickImageButton1);
+		final TextView txv=(TextView) root.findViewById(R.id.filepickTextView2);
+		final android.support.v7.app.AlertDialog a=new android.support.v7.app.AlertDialog.Builder(this)
+		.setView(root)
+		.create();
+		btn_1.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					a.dismiss();
+					// TODO: Implement this method
+				}
+			});
+		
+			
+		files=listFiles(current);
+		btn_2.setText(getString(R.string.file_pick_3)+c.getName());
+		txv.setText(current.getName());
+		final FilePickAdapter fpa=new FilePickAdapter(files,this);
+		lv.setAdapter(fpa);
+		ib.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					
+					if(!current.equals(Environment.getExternalStorageDirectory())){
+						files.clear();
+						files.addAll(listFiles(current.getParentFile()));
+						fpa.notifyDataSetChanged();
+						if(current.getParentFile()==Environment.getExternalStorageDirectory()){
+							txv.setText(R.string.file_pick_4);
+							btn_2.setText(getString(R.string.file_pick_3)+getString(R.string.file_pick_4));
+						}else{
+							txv.setText(current.getParentFile().getName());
+							btn_2.setText(getString(R.string.file_pick_3)+current.getParentFile().getName());
+						}
+						current=current.getParentFile();
+					}
+					// TODO: Implement this method
+				}
+			});
+		lv.setOnItemClickListener(new OnItemClickListener(){
+
+				@Override
+				public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4)
+				{
+					
+					File f=(File) p1.getItemAtPosition(p3);
+					if(f.isDirectory()==true){
+					files.clear();
+					files.addAll(listFiles(f));
+					fpa.notifyDataSetChanged();
+					txv.setText(f.getName());
+					btn_2.setText(getString(R.string.file_pick_3)+current.getParentFile().getName());
+					current=f;
+					}
+					// TODO: Implement this method
+				}
+			});
+		btn_2.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					
+					try{
+						initData(current.getPath()+"/");
+						init_main_card_list(current.getPath()+"/");
+					}catch(Exception e){
+						
+					}
+					if(files.size()==0||card_data.size()!=0){
+					edit.putString("location",current.getPath()+"/");
+					edit.commit();
+					ps1.setSummary(spf.getString("location",SpfConstants.getDefaultStoragePosition()));
+					a.dismiss();
+					Toast.makeText(Preferences.this,R.string.file_pick_7,Toast.LENGTH_SHORT).show();
+					sendBroadcast(new Intent().setAction(MainActivity.THEME_ACTION));
+					}else{
+						Toast.makeText(Preferences.this,R.string.file_pick_5,Toast.LENGTH_SHORT).show();
+					}
+					// TODO: Implement this method
+				}
+			});
+		a.show();
+	}
+	public List<File> listFiles(File f){
+		List<File> tm=new LinkedList<File>();
+		File[] fp=f.listFiles();
+		for(File b:fp){
+			tm.add(b);
+		}
+		Collections.sort(tm);
+		return tm;
+	}
+	public void init_main_card_list(String e)
+	{
+		card_data_key.clear();
+		card_data.clear();
+		try{
+			File dir=new File(e);
+			File[] dirs=dir.listFiles();
+			if (dirs != null)
+			{
+				for (String h:parent)
+				{
+					File inner=new File(dir.getPath() + "/" + h + "/");
+					File[] temp2=inner.listFiles();
+					if (temp2 != null)
+					{
+						for (File t:temp2)
+						{
+							String[] pkg_t=t.getName().split(" ")[2].split("\\.");
+							String pkg="";
+							int k=0;
+							for (String n:pkg_t)
+							{
+								if (n.equals(pkg_t[pkg_t.length - 1]))
+								{
+									break;
+								}
+								if (k != 0)
+								{
+									pkg = pkg + "." + n;
+								}
+								else
+								{
+									pkg = pkg + n;
+								}
+								k++;
+							}
+							if (!card_data_key.contains(pkg))
+							{
+								card_data_key.add(pkg);
+								List<String> temp=new ArrayList<String>();
+								temp.add(t.getName());
+								card_data.put(pkg, temp);
+							}
+							else
+							{
+								card_data.get(pkg).add(t.getName());
+							}
+						}
+					}
+				}
+			}
+		}catch(Exception r){
+
+		}
+	}
+	public void initData(String e)/*drawerlayout的文件列表加载*/
+	{
+		parent.clear();
+		File dir=new File(e);
+		File[] dirs=dir.listFiles();
+		if (dirs != null)
+		{
+			for (File i:dirs)
+			{
+				parent.add(i.getName());
+			}
+			map.clear();
+			for (String h:parent)
+			{
+				File inner=new File(dir.getPath() + "/" + h + "/");
+				List<String> temp=new ArrayList<String>();
+				File[] temp2=inner.listFiles();
+				if (temp2 != null)
+				{
+					for (File t:temp2)
+					{
+						temp.add(t.getName());
+
+					}
+					map.put(h, temp);
+				}
+			}
+
+
+		}
 	}
 }
