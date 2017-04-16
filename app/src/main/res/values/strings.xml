@@ -8,6 +8,7 @@
 	<string name="au_l_3">View source</string>
 	<string name="au_l_4">View in market</string>
 	<string name="au_l_4_1">So far in Coolapk</string>
+	<string name="pref_0">All settings changes will work after destroying the Activity</string>
 	<string name="pref_c1">Overall</string>
 	<string name="pref_c1_cb1_title">Keep Notification</string>
 	<string name="pref_c1_cb1_summary">Keep a notification to show service state</string>
@@ -58,11 +59,15 @@
 	<string name="main_check_not_latest">Update found</string>
 	<string name="actionmode_1">Copy</string>
 	<string name="actionmode_2">Share</string>
+	<string name="actionmode_3">Select All</string>
 	<string name="shortcuts_1_long">Start service</string>
 	<string name="shortcut_disable">Invalid</string>
 	<string name="viewer_1">Save location:</string>
 	<string name="viewer_2">Exception type:</string>
 	<string name="viewer_3">From:</string>
+	<string name="viewer_4">No binary,flash it?(2mb,require root permission)</string>
+	<string name="viewer_5">Lack of file</string>
+	<string name="viewer_6">All standard error,Addr2line invalid</string>
 	<string name="delete_ad_title">Delete</string>
 	<string name="ad_pb">Ok</string>
 	<string name="ad_nb">Cancel</string>

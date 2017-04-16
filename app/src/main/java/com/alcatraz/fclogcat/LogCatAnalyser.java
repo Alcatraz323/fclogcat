@@ -166,6 +166,13 @@ public class LogCatAnalyser
 		}
 		return false;
 	}
+	public static String getContent(String line){
+		
+			
+			String[] t=line.split(":", 4);
+			return t[3];
+
+	}
 	public static String getTime(String line)
 	{
 		String[] process=line.split("\\.");

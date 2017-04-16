@@ -59,6 +59,7 @@ public class ListViewAdapter extends BaseAdapter
 			p2=lf.inflate(R.layout.list_board,null);
 		}
 		TextView txv=(TextView) p2.findViewById(R.id.listboardTextView_time);
+		ImageView imgv=(ImageView) p2.findViewById(R.id.listboardImageView1);
 		String raw=content.get(p1);
 		for(String i:hl_fil){
 			String org=Html.escapeHtml(Html.fromHtml(i));
@@ -73,14 +74,16 @@ public class ListViewAdapter extends BaseAdapter
 		boolean hasGotExc=false;
 			if(p1>=2&&!hasGotExc){
 				if(content.get(p1).contains("Exception")){
-					txv.setBackgroundColor(Color.parseColor(hb_c));
+					raw="<b>"+raw+"</b>";
 					hasGotExc=true;
 				}
 				
 			}
 			if(p1>=2){
 				if(content.get(p1).contains("at "+pkg)){
-					txv.setBackgroundColor(Color.parseColor(hb_c));
+					raw="<b>"+raw+"</b>";
+					imgv.setImageResource(R.drawable.ic_star);
+					
 				}
 			}
 			}

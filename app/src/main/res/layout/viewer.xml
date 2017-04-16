@@ -6,21 +6,36 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
-	<android.support.design.widget.AppBarLayout
-		android:id="@+id/appbar"
+	<LinearLayout
+		android:layout_height="match_parent"
 		android:layout_width="match_parent"
-		android:layout_height="280dp">
-
-		<android.support.design.widget.CollapsingToolbarLayout
-			android:id="@+id/collapsing_toolbar_layout"
+		android:orientation="vertical">
+		<android.support.design.widget.AppBarLayout
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			app:contentScrim="#3f51b5"
-			app:statusBarScrim="#3f51b5"
-			app:expandedTitleMarginStart="48dp"
-			app:layout_scrollFlags="scroll|exitUntilCollapsed">
+			android:layout_height="wrap_content"
+			android:fitsSystemWindows="true"
+			android:id="@+id/mainAppBarLayout1">
+			
+		<android.support.v7.widget.Toolbar
+			android:theme="@style/ToolbarPopupTheme"
+			android:id="@+id/mytoolbar_1"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"/>
+		</android.support.design.widget.AppBarLayout>
+		<android.support.v7.widget.CardView
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			app:cardMaxElevation="6dp"
+			app:cardElevation="3.5dp"
+			app:cardPreventCornerOverlap="true"
+	
+			app:cardBackgroundColor="#ffffff"
+			android:clickable="true"
+			android:foreground="?android:attr/selectableItemBackground"
+			android:id="@+id/listcardCardView1">
 
 			<LinearLayout
+				android:layout_margin="16dp"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:orientation="vertical"
@@ -31,46 +46,48 @@
 
 			</LinearLayout>
 
-			<android.support.v7.widget.Toolbar
-				android:theme="@style/ToolbarPopupTheme"
-				android:id="@+id/mytoolbar_1"
-				android:layout_width="match_parent"
-				app:layout_scrollFlags="scroll|exitUntilCollapsed"
-				android:layout_height="?attr/actionBarSize"
-				app:layout_collapseMode="pin"/>
-
-		</android.support.design.widget.CollapsingToolbarLayout>
-
-	</android.support.design.widget.AppBarLayout>
-
-	<android.support.v4.widget.NestedScrollView
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-		<com.alcatraz.fclogcat.NoScrollListView
-			android:divider="@null"
+		</android.support.v7.widget.CardView>
+		
+		<ScrollView
 			android:layout_height="match_parent"
-			android:layout_width="match_parent"
-			android:id="@+id/viewercontentListView1"/>
+			android:layout_width="match_parent">
 
-	</android.support.v4.widget.NestedScrollView>
+			<LinearLayout
+				android:layout_height="match_parent"
+				android:layout_width="match_parent"
+				android:orientation="vertical">
 
-	<android.support.design.widget.FloatingActionButton
-		android:id="@+id/fab"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:src="@drawable/ic_delete_1"
-		android:layout_marginRight="16dp"
-		android:layout_marginBottom="16dp"
-		app:backgroundTint="#30469b"
-		app:borderWidth="0dp"
-		app:elevation="6dp"
-		app:fabSize="normal"
-		app:layout_anchor="@id/viewercontentListView1"
-		app:layout_anchorGravity="bottom|right"
-		app:pressedTranslationZ="12dp"
-		app:rippleColor="#a6a6a6"/>
+				
+				<android.support.v7.widget.CardView
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					app:cardMaxElevation="4.5dp"
+					app:cardElevation="2.5dp"
+					app:cardPreventCornerOverlap="true"
+					app:cardUseCompatPadding="true"
+					app:cardBackgroundColor="#ffffff"
+					android:layout_marginLeft="3dp"
+					android:layout_marginRight="3dp"
+					android:clickable="true"
+					android:foreground="?android:attr/selectableItemBackground"
+					android:id="@+id/listcardCardView1">
+
+					<com.alcatraz.fclogcat.NoScrollListView
+						android:divider="@null"
+						android:layout_height="match_parent"
+						android:layout_width="match_parent"
+						android:id="@+id/viewercontentListView1"/>
+
+				</android.support.v7.widget.CardView>
+
+			</LinearLayout>
+
+		</ScrollView>
+	</LinearLayout>
+
+	
+
+	
 
 </android.support.design.widget.CoordinatorLayout>
 

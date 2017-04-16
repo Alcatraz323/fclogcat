@@ -51,6 +51,7 @@ public class Preferences extends PreferenceActivity
 		findPreferences();
 		StatusBarUtil.setColor(this,getResources().getColor(R.color.default_colorPrimary));
 	}
+	
 	public void initPref()
 	{
 		spf=getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
@@ -446,7 +447,7 @@ public class Preferences extends PreferenceActivity
 						initData(current.getPath()+"/");
 						init_main_card_list(current.getPath()+"/");
 					}catch(Exception e){
-						
+						Log.e("Alc","Error");
 					}
 					if(files.size()==0||card_data.size()!=0){
 					edit.putString("location",current.getPath()+"/");
@@ -524,7 +525,7 @@ public class Preferences extends PreferenceActivity
 				}
 			}
 		}catch(Exception r){
-
+			Log.e("Alcn","Error");
 		}
 	}
 	public void initData(String e)/*drawerlayout的文件列表加载*/

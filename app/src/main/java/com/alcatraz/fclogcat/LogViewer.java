@@ -16,22 +16,28 @@ import android.annotation.*;
 import android.app.*;
 import android.support.design.widget.*;
 import android.util.*;
+import android.content.res.*;
+import android.text.method.*;
+import com.alcatraz.support.implutil.Terminal;
 
 public class LogViewer extends ThemedActivity
 {
 	android.support.v7.widget.Toolbar tb;
-	NoScrollListView lv;
+	ListView lv;
 	TextView txv;
 	TextView txv2;
 	TextView txv3;
 	LinearLayout ll;
 	ImageView imgv;
+	ImageView imgv1;
+	ImageView imgv2;
 	String exc;
+	String system;
 	String cls="";
 	ListViewAdapter lva;
 	AppBarLayout abl;
 	FloatingActionButton fab;
-	CollapsingToolbarLayout ctl;
+	List<String> keyline;
 	Map<Integer,String> selected=new HashMap<Integer,String>();
 	List<String> data=new ArrayList<String>();
 	String pkg;
@@ -115,8 +121,93 @@ public class LogViewer extends ThemedActivity
 			case android.R.id.home:
 				finish();
 				break;
+			case R.id.vitem:
+				if(keyline.size()!=0){
+				addr2line();
+				}else{
+					Toast.makeText(this,R.string.viewer_6,Toast.LENGTH_SHORT).show();
+				}
+				break;
+			case R.id.vitem1:
+				new File(path).delete();
+				finish();
+				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	public boolean upgradeRootPermission(String pkgCodePath)
+	{
+		java.lang.Process process = null;
+		DataOutputStream os = null;
+		try
+		{
+			String cmd="chmod 777 " + pkgCodePath;
+			process = Runtime.getRuntime().exec("su");
+			os = new DataOutputStream(process.getOutputStream());
+			os.writeBytes(cmd + "\n");
+			os.writeBytes("exit\n");
+			os.flush();
+			process.waitFor();
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+		finally
+		{
+			try
+			{
+				if (os != null)
+				{
+					os.close();
+				}
+				process.destroy();
+			}
+			catch (Exception e)
+			{
+			}
+		}
+		try
+		{
+			return process.waitFor() == 0;
+		}
+		catch (InterruptedException e)
+		{}
+		return true;
+	}
+	private Boolean CopyAssetsFile(String filename, String des)
+	{
+		Boolean isSuccess = true;
+		AssetManager assetManager = this.getAssets();
+
+		InputStream in = null;
+		OutputStream out = null;
+		try
+		{
+			in = assetManager.open(filename);
+			String newFileName = des + "/" + filename;
+			out = new FileOutputStream(newFileName);
+
+			byte[] buffer = new byte[1024];
+			int read;
+			while ((read = in.read(buffer)) != -1)
+			{
+				out.write(buffer, 0, read);
+			}
+			in.close();
+			in = null;
+			out.flush();
+			out.close();
+			out = null;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			isSuccess = false;
+		}
+
+		return isSuccess;
+
 	}
 	public int dpToPx(Context context, int dp)
 	{
@@ -131,48 +222,27 @@ public class LogViewer extends ThemedActivity
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		ll = (LinearLayout) findViewById(R.id.viewerLinearLayout1);
-		Immersive(tb, true, this);
+		tb.setTitle(label);
+		tb.setBackgroundColor(getResources().getColor(R.color.default_colorPrimary));
+		setupStaticColorPadding(getResources().getColor(R.color.default_colorPrimary));
 		abl = (AppBarLayout) findViewById(R.id.appbar);
-		ctl = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
-		ctl.setTitle(label);
-		ctl.setCollapsedTitleTextColor(Color.WHITE);
-		ctl.setExpandedTitleColor(Color.WHITE);
-		ctl.setContentScrimColor(rgb);
-		ctl.setBackgroundColor(rgb);
 		txv = (TextView) findViewById(R.id.viewercontentTextView1);
 		txv2 = (TextView) findViewById(R.id.viewercontentTextView2);
 		txv3 = (TextView) findViewById(R.id.viewercontentTextView3);
+		imgv1 = (ImageView) findViewById(R.id.viewercontentImageView1);
+		imgv2 = (ImageView) findViewById(R.id.viewercontentImageView2);
 		txv2.setText(txv2.getText().toString() + path);
 		txv3.setText(txv3.getText().toString() + exc);
 		txv.setText(txv.getText().toString() + cls);
-		fab = (FloatingActionButton) findViewById(R.id.fab);
-		fab.setBackgroundColor(rgb);
-		fab.setOnClickListener(new OnClickListener(){
-
-				@Override
-				public void onClick(View p1)
-				{
-					android.support.v7.app.AlertDialog a=new android.support.v7.app.AlertDialog.Builder(LogViewer.this)
-						.setTitle(R.string.delete_ad_title)
-						.setMessage(R.string.delete_ad_msg)
-						.setNegativeButton(R.string.delete_ad_nb, null)
-						.setPositiveButton(R.string.delete_ad_pb, new DialogInterface.OnClickListener(){
-
-							@Override
-							public void onClick(DialogInterface p1, int p2)
-							{
-								File f=new File(path);
-								f.delete();
-								finish();
-								// TODO: Implement this method
-							}
-						}).create();
-					new AlertDialogUtil().setSupportDialogColor(a, Color.parseColor("#3f51b5"));
-					a.show();
-					// TODO: Implement this method
-				}
-			});
-		lv = (NoScrollListView) findViewById(R.id.viewercontentListView1);
+		File f=new File(path);
+		if (f.getName().contains("nativelog"))
+		{
+			imgv1.setVisibility(View.GONE);
+			imgv2.setVisibility(View.GONE);
+			txv3.setVisibility(View.GONE);
+			txv.setVisibility(View.GONE);
+		}
+		lv = (ListView) findViewById(R.id.viewercontentListView1);
 		lva = new ListViewAdapter(this, data, lv, pkg, set, hb, true);
 		lv.setAdapter(lva);
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -238,6 +308,21 @@ public class LogViewer extends ThemedActivity
 								selected.clear();
 							}
 							break;
+						case R.id.act_item3:
+							int i=0;
+							for (String j:data)
+							{
+								if (!selected.containsKey(i))
+								{
+									selected.put(i, j);
+									lv.setItemChecked(i, true);
+								}
+								i++;
+
+							}
+							lva.notifyDataSetChanged();
+							return false;
+
 					}
 					lv.clearChoices();
 					p1.finish();
@@ -254,6 +339,7 @@ public class LogViewer extends ThemedActivity
 				@Override
 				public void onItemCheckedStateChanged(ActionMode p1, int p2, long p3, boolean p4)
 				{
+
 					if (p4)
 					{
 						selected.put(p2, lv.getItemAtPosition(p2).toString());
@@ -268,8 +354,21 @@ public class LogViewer extends ThemedActivity
 				}
 			});
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater mi=new MenuInflater(this);
+		mi.inflate(R.menu.viewerad, menu);
+		// TODO: Implement this method
+		return super.onCreateOptionsMenu(menu);
+
+
+	}
+
 	public void initData()
 	{
+		keyline = new ArrayList<String>();
 		File f=new File(path);
 		try
 		{
@@ -285,7 +384,8 @@ public class LogViewer extends ThemedActivity
 					boolean hasGotExc=false;
 					while ((line = reader.readLine()) != null)
 					{
-						data.add(line);
+
+						data.add(LogCatAnalyser.getContent(line));
 						if (i >= 2 && !hasGotExc)
 						{
 							if (line.contains("Exception"))
@@ -304,9 +404,23 @@ public class LogViewer extends ThemedActivity
 						}
 						i++;
 					}
-				}else{
-					while((line=reader.readLine())!=null){
-						data.add(line);
+				}
+				else
+				{
+					while ((line = reader.readLine()) != null)
+					{
+						String x=LogCatAnalyser.getContent(line);
+						data.add(x);
+						x = x.trim();
+						x = x.toLowerCase();
+						if (x.contains(pkg.trim().toLowerCase()) && x.contains("/lib/"))
+						{
+							String process=LogCatAnalyser.getContent(line).trim();
+							String[] process_1=process.split(" ");
+							keyline.add(process_1[2] + ":" + process_1[4]);
+							Log.e("Alcn",keyline.get(0));
+						}
+
 					}
 				}
 				fis.close();
@@ -343,30 +457,31 @@ public class LogViewer extends ThemedActivity
 	}
 	public String getPkgManual(String p)
 	{
-		if(p!=null){
-		String pkg1="";
-		String[] pro=p.split(" ");
-		String[] pkg_t=pro[2].split("\\.");
-		
-		int k=0;
-		for (String n:pkg_t)
+		if (p != null)
 		{
-			if (n.equals(pkg_t[pkg_t.length - 1]))
+			String pkg1="";
+			String[] pro=p.split(" ");
+			String[] pkg_t=pro[2].split("\\.");
+
+			int k=0;
+			for (String n:pkg_t)
 			{
-				break;
+				if (n.equals(pkg_t[pkg_t.length - 1]))
+				{
+					break;
+				}
+				if (k != 0)
+				{
+					pkg1 = pkg1 + "." + n;
+				}
+				else
+				{
+					pkg1 = pkg1 + n;
+				}
+				k++;
 			}
-			if (k != 0)
-			{
-				pkg1 = pkg1 + "." + n;
-			}
-			else
-			{
-				pkg1 = pkg1 + n;
-			}
-			k++;
-		}
-		
-		return pkg1;
+
+			return pkg1;
 		}
 		return "";
 	}
@@ -378,5 +493,111 @@ public class LogViewer extends ThemedActivity
 		super.onStop();
 		finish();
 	}
+	public void addr2line(){
+		try
+		{
+			java.lang.Process pro=Runtime.getRuntime().exec("mount");
+			BufferedReader br=new BufferedReader(new InputStreamReader(pro.getInputStream()));
+			String line;
+			while ((line = br.readLine()) != null)
+			{
+				if (line.contains("/system"))
+				{
+					system = line.split("system")[0] + "system";
+					Log.e("Alcn", system);
+				}
+			}
+			pro.destroy();
+		}
+		catch (IOException e)
+		{}
+		if (new File("/system/bin/addr2line").exists())
+		{
+			View ar=getLayoutInflater().inflate(R.layout.addr2line, null);
+			final TextView logbox=(TextView) ar.findViewById(R.id.addr2lineTextView1);
+			android.support.v7.app.AlertDialog b=new android.support.v7.app.AlertDialog.Builder(this)
+				.setTitle("Addr2line")
+				.setView(ar)
+				.setPositiveButton(R.string.ad_pb, null)
+				.create();
+			new AlertDialogUtil().setSupportDialogColor(b, getColor(R.color.default_colorPrimary));
+			b.show();
+			for(String xmd:keyline){
+				String[] te=xmd.split(":");
+				logbox.append(">"+"addr2line -e -f " + te[1] + " " + te[0]+"\n");
+				try
+				{
+					java.lang.Process pro=Runtime.getRuntime().exec("addr2line -f -e " + te[1] + " " + te[0]);
+					BufferedReader br=new BufferedReader(new InputStreamReader(pro.getInputStream()));
+					String line;
+					while ((line = br.readLine()) != null)
+					{
+						logbox.append(line+"\n");
+					}
+					pro.destroy();
+				}
+				catch (IOException e)
+				{}
+			}
+		}
+		else
+		{
+			android.support.v7.app.AlertDialog a=new android.support.v7.app.AlertDialog.Builder(this)
+				.setTitle(R.string.viewer_5)
+				.setMessage(R.string.viewer_4)
+				.setNegativeButton(R.string.ad_nb, null)
+				.setPositiveButton(R.string.ad_pb, new DialogInterface.OnClickListener(){
 
+					@Override
+					public void onClick(DialogInterface p1, int p2)
+					{
+						upgradeRootPermission(getPackageCodePath());
+						CopyAssetsFile("addr2line", "/sdcard/");
+						java.lang.Process process = null;
+						DataOutputStream os = null;
+
+						try
+						{
+							String cmd="chmod 0755 " + "/system/bin/addr2line";
+							process = Runtime.getRuntime().exec("su");
+							os = new DataOutputStream(process.getOutputStream());
+							os.writeBytes("mount -o remount,rw " + system + "/system\n");
+							os.writeBytes("mv /sdcard/addr2line /system/bin\n");
+							os.writeBytes("rm /sdcard/addr2line\n");
+							os.writeBytes(cmd + "\n");
+							os.writeBytes("exit\n");
+							os.flush();
+							process.waitFor();
+						}
+						catch (Exception e)
+						{
+
+						}
+
+
+						finally
+						{
+							try
+							{
+								if (os != null)
+								{
+									os.close();
+								}
+
+								process.destroy();
+								addr2line();
+							}
+							catch (Exception e)
+							{
+							}
+						}
+
+						// TODO: Implement this method
+					}
+				}).create();
+			new AlertDialogUtil().setSupportDialogColor(a, getColor(R.color.default_colorPrimary));
+			a.show();
+
+		}
+	}
 }

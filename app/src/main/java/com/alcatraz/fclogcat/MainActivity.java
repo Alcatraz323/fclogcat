@@ -176,6 +176,7 @@ public class MainActivity extends ThemedActivity
 		{
 			case R.id.item1:
 				startActivity(new Intent(this, Preferences.class));
+				Toast.makeText(this,R.string.pref_0,Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.item2:
 				startActivity(new Intent(this, Author.class));
@@ -214,6 +215,7 @@ public class MainActivity extends ThemedActivity
 						
 						case R.id.nav_support_1_2:
 							startActivity(new Intent(MainActivity.this, Preferences.class));
+							Toast.makeText(MainActivity.this,R.string.pref_0,Toast.LENGTH_SHORT).show();
 							break;
 						
 						case R.id.nav_support_2_3:

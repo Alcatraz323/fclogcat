@@ -3,8 +3,7 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:orientation="vertical"
-	android:layout_marginLeft="48dp">
+	android:orientation="vertical">
 
 	<LinearLayout
 		android:layout_height="wrap_content"
@@ -23,8 +22,7 @@
 			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:layout_width="wrap_content"
 			android:text="@string/viewer_1"
-			android:id="@+id/viewercontentTextView2"
-			android:textColor="#FFFFFF"/>
+			android:id="@+id/viewercontentTextView2"/>
 
 	</LinearLayout>
 
@@ -38,15 +36,15 @@
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:layout_margin="16dp"
-			android:src="@drawable/ic_bug"/>
+			android:src="@drawable/ic_bug"
+			android:id="@+id/viewercontentImageView1"/>
 
 		<TextView
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:layout_width="wrap_content"
 			android:text="@string/viewer_2"
-			android:id="@+id/viewercontentTextView3"
-			android:textColor="#FFFEFF"/>
+			android:id="@+id/viewercontentTextView3"/>
 
 	</LinearLayout>
 
@@ -60,14 +58,14 @@
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:src="@drawable/ic_disk_alert"
-			android:layout_margin="16dp"/>
+			android:layout_margin="16dp"
+			android:id="@+id/viewercontentImageView2"/>
 
 		<TextView
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:layout_width="wrap_content"
 			android:text="@string/viewer_3"
-			android:textColor="#FFFFFF"
 			android:id="@+id/viewercontentTextView1"/>
 
 	</LinearLayout>

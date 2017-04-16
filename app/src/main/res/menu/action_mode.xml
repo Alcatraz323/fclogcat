@@ -8,4 +8,8 @@
 		android:id="@+id/act_item2"
 		android:title="@string/actionmode_2"
 		android:icon="@drawable/ic_share_variant_white_24dp"/>
+	<item
+		android:id="@+id/act_item3"
+		android:title="@string/actionmode_3"
+		android:icon="@drawable/ic_sort"/>
 </menu>

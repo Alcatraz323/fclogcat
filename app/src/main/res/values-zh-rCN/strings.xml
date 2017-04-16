@@ -7,7 +7,8 @@
 	<string name="au_l_2_1">主要:Alcatraz,感谢busstop12的帮助</string>
 	<string name="au_l_3">查看源码</string>
 	<string name="au_l_4">在市场中查看</string>
-	<string name="au_l_4_1">目前只有在酷安(求评论,求5星,觉得好请不要吝啬您的评价!)</string>
+	<string name="au_l_4_1">Thanks for being with me!</string>
+	<string name="pref_0">开发者很懒,所有设置更改需要销毁设置Activity才会生效ಠﭛಠ</string>
 	<string name="pref_c1">常规</string>
 	<string name="pref_c1_cb1_title">一直显示通知</string>
 	<string name="pref_c1_cb1_summary">保持一条通知显示服务状态</string>
@@ -58,11 +59,15 @@
 	<string name="main_report_bug">请附上错误信息投递至以下邮箱</string>
 	<string name="actionmode_1">复制</string>
 	<string name="actionmode_2">分享</string>
+	<string name="actionmode_3">全选</string>
 	<string name="shortcuts_1_long">启动服务</string>
 	<string name="shortcut_disable">不可用</string>
 	<string name="viewer_1">保存位置:</string>
 	<string name="viewer_2">错误类型:</string>
 	<string name="viewer_3">错误来自:</string>
+	<string name="viewer_4">无二进制文件,刷入?(需要root)(2mb)</string>
+	<string name="viewer_5">缺少文件</string>
+	<string name="viewer_6">均为标准函数错误,Addr2line无效</string>
 	<string name="delete_ad_title">删除</string>
 	<string name="ad_pb">确定</string>
 	<string name="ad_nb">取消</string>
