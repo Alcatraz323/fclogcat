@@ -29,6 +29,7 @@
 	<string name="pref_c3_cb1_title">清理缓冲</string>
 	<string name="pref_c3_cb1_summary">每一次记录后执行logcat -c</string>
 	<string name="pref_c3_cb2_title">禁用浮动通知</string>
+	<string name="pref_c3_child">直接显示悬浮窗</string>
 	<string name="pref_c3_cb3_title">空白通知</string>
 	<string name="pref_c3_cb3_summary">点击通知区域不会跳转</string>
 	<string name="pref_apply">退出时生效</string>
@@ -67,7 +68,7 @@
 	<string name="viewer_3">错误来自:</string>
 	<string name="viewer_4">无二进制文件,刷入?(需要root)(2mb)</string>
 	<string name="viewer_5">缺少文件</string>
-	<string name="viewer_6">均为标准函数错误,Addr2line无效</string>
+	<string name="viewer_6">均为标准函数错误或非Native日志,Addr2line无效</string>
 	<string name="delete_ad_title">删除</string>
 	<string name="ad_pb">确定</string>
 	<string name="ad_nb">取消</string>
@@ -85,6 +86,7 @@
 	<string name="output_file_failed">导出失败!</string>
 	<string name="chooser_title">选择文件</string>
 	<string name="main_delete_all">删除该应用所有日志</string>
+	<string name="path_null">路径丢失,请重新打开(你是不是点太快了)</string>
 	<string name="setup_title_1">欢迎使用</string>
 	<string name="setup_title_2">让我们完成一些设置</string>
 	<string name="setup_title_3">偏好设置</string>
@@ -120,17 +122,17 @@
 	<!-- Version 1.6.0 update log-->
 	<string name="setup_title_5">权限</string>
 	<string name="setup_title_6">更新日志</string>
-	<string name="u_1">1.修复了开机启动可能造成双开服务的bug</string>
-	<string name="u_2">2.通知增加删除,分享,悬浮窗开关,并支持直接进入Log查看</string>
-	<string name="u_3">3.悬浮窗(多窗口)查看模式</string>
-	<string name="u_4">4.Android 7.1/Nova Launcher Shortcuts支持</string>
+	<string name="u_1">1.Native日志</string>
+	<string name="u_2">2.查看器去除日志前缀</string>
+	<string name="u_3">3.Addr2line(NDK,需要符号表)</string>
+	<string name="u_4">4.增大安装包</string>
 	<string name="u_5">5.更改targetApi,对23及以上改用动态获取权限</string>
-	<string name="u_6">6.简易终端功能</string>
-	<string name="u_7">7.主页面改为双抽屉(时间文件列表改为右侧抽屉)</string>
-	<string name="u_8">8.Native错误抓取</string>
-	<string name="u_9">9.夜间模式</string>
-	<string name="u_10">10.自定义目录</string>
-	<string name="u_11">11.增加对每次记录清除logcat缓冲的选项</string>
-	<string name="u_12">12.增加英语和繁体中文语言(自切)</string>
+	<string name="u_6">6.查看器全选</string>
+	<string name="u_7">7.可视化目录选择</string>
+	<string name="u_8">8.查看器UI优化</string>
+	<string name="u_9">9.删除左抽屉部分按钮</string>
+	<string name="u_10">10.增加直接启动悬浮窗选项</string>
+	<string name="u_11">11.悬浮窗内容可以多选复制/分享了</string>
+	<string name="u_12">12.Shortcuts只提供服务控制</string>
 	<string name="u_13">13.UI/Bug fixes.</string>
 </resources>

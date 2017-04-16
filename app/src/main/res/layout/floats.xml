@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:theme="@style/AppTheme"
@@ -10,7 +11,7 @@
 		android:layout_width="wrap_content"
 		android:orientation="vertical"
 		android:visibility="gone"
-		android:background="#4E4E4E">
+		android:background="#404040">
 
 		<android.support.v4.widget.DrawerLayout
 			android:layout_height="350dp"
@@ -24,19 +25,25 @@
 
 				<include
 					layout="@layout/float_bar"/>
-				<LinearLayout
+
+				<ScrollView
 					android:layout_height="match_parent"
-					android:layout_width="match_parent"
-					android:orientation="vertical">
-					
-						<ListView
+					android:layout_width="match_parent">
+
+					<LinearLayout
+						android:layout_height="match_parent"
+						android:layout_width="match_parent"
+						android:orientation="vertical">
+
+						<com.alcatraz.fclogcat.NoScrollListView
+							android:divider="@null"
 							android:layout_height="match_parent"
 							android:layout_width="match_parent"
-							android:id="@+id/floatwindowListView1"/>
+							android:id="@+id/floatsListView1"/>
 
-					
+					</LinearLayout>
 
-				</LinearLayout>
+				</ScrollView>
 
 			</LinearLayout>
 
@@ -46,9 +53,10 @@
 				android:orientation="vertical"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent">
+
 				<include
 					layout="@layout/float_side"/>
-				
+
 			</LinearLayout>
 
 		</android.support.v4.widget.DrawerLayout>

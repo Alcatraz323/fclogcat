@@ -44,7 +44,7 @@ public class AnimateUtil
 				});
 			AnimationSet as=new AnimationSet(true);
 			AlphaAnimation aa=new AlphaAnimation(0,1);
-			aa.setDuration(1100);
+			aa.setDuration(700);
 			as.addAnimation(aa);
 			v.startAnimation(as);
 			as.setAnimationListener(new Animation.AnimationListener(){
@@ -72,7 +72,7 @@ public class AnimateUtil
 		
 		AnimationSet as=new AnimationSet(true);
 		AlphaAnimation aa=new AlphaAnimation(0,1);
-		aa.setDuration(1100);
+		aa.setDuration(700);
 		as.addAnimation(aa);
 		v.startAnimation(as);
 		as.setAnimationListener(new Animation.AnimationListener(){
@@ -102,7 +102,7 @@ public class AnimateUtil
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
 			Animator a1=ViewAnimationUtils.createCircularReveal(v,(int)v.getX(),(int)v.getY(),(float)Math.hypot(v.getWidth(),v.getHeight()),0);
 			a1.setInterpolator(new AccelerateInterpolator());
-			a1.setDuration(750);
+			a1.setDuration(700);
 			a1.start();
 			a1.addListener(new Animator.AnimatorListener(){
 
@@ -135,7 +135,7 @@ public class AnimateUtil
 		}else{
 			AnimationSet as=new AnimationSet(true);
 			AlphaAnimation aa=new AlphaAnimation(0,1);
-			aa.setDuration(1100);
+			aa.setDuration(700);
 			as.addAnimation(aa);
 			v.startAnimation(as);
 			as.setAnimationListener(new Animation.AnimationListener(){

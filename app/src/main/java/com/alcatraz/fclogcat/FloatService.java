@@ -14,13 +14,15 @@ import java.io.*;
 import java.util.*;
 import android.util.*;
 import android.widget.SeekBar.*;
+import android.widget.AbsListView.*;
 
 public class FloatService extends Service
 {
 	public final static String ADD_TAG="ADDfhhff";
 	WindowManager wm;
 	WindowManager.LayoutParams pa;
-	List<View> rls;
+	
+	List<Windows> rls;
 	Recgg hh;
 	int index_overall=0;
 	@Override
@@ -46,7 +48,7 @@ public class FloatService extends Service
 	public void onStart(Intent intent, int startId)
 	{
 		wm=(WindowManager) getSystemService(WINDOW_SERVICE);
-		rls=new ArrayList<View>();
+		rls=new ArrayList<Windows>();
 		regist();
 		// TODO: Implement this method
 		super.onStart(intent, startId);
@@ -112,7 +114,7 @@ public class FloatService extends Service
 		String label=i.getStringExtra("label");
 		String path=i.getStringExtra("path");
 		String pkg=i.getStringExtra("pkg");
-		List<String> read=initData(path,pkg);
+		final List<String> read=initData(path,pkg);
 		String line_=read.get(read.size()-1);
 		String excp=read.get(read.size()-2);
 		read.remove(read.size()-1);
@@ -131,13 +133,127 @@ public class FloatService extends Service
         pa.height=WindowManager.LayoutParams.WRAP_CONTENT;
 		LayoutInflater li=(LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 		final View root=li.inflate(R.layout.floats,null);
+		final RelativeLayout rl=(RelativeLayout) root.findViewById(R.id.floatbarRelativeLayout1);
+		ImageButton imgb_back=(ImageButton) root.findViewById(R.id.floatbarImageButton2);
+		
+			final TextView xpunt=(TextView) root.findViewById(R.id.floatbarTextView2);
+		ImageButton imgb_copy=(ImageButton) root.findViewById(R.id.floatbarImageButton5);
+		
+		ImageButton imgb_share=(ImageButton) root.findViewById(R.id.floatbarImageButton4);
+		
 		final LinearLayout ll1=(LinearLayout) root.findViewById(R.id.floatwindowLinearLayout1);
 		final ImageButton imgb_tog=(ImageButton) root.findViewById(R.id.floatwindowImageButton1);
 		ImageButton imgb_side=(ImageButton) root.findViewById(R.id.floatbarImageButton1);
 		final DrawerLayout dl=(DrawerLayout) root.findViewById(R.id.floatwindowDrawerLayout1);
-		ListView main=(ListView) root.findViewById(R.id.floatwindowListView1);
-		ListViewAdapter lva=new ListViewAdapter(this,read,main,pkg,hldb,hlb,false);
+		final ListView main=(ListView) root.findViewById(R.id.floatsListView1);
+		
+		final ListViewAdapter lva=new ListViewAdapter(this,read,main,pkg,hldb,hlb,false);
 		main.setAdapter(lva);
+		imgb_back.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					AnimateUtil.playEnd(rl);
+					rls.get(index).setmult(false);
+					rls.get(index).selected.clear();
+					lva.notifyDataSetChanged();
+					// TODO: Implement this method
+				}
+			});
+		main.setOnItemLongClickListener(new OnItemLongClickListener(){
+
+				@Override
+				public boolean onItemLongClick(AdapterView<?> p1, View p2, int p3, long p4)
+				{
+					if(!rls.get(index).multi){
+						rls.get(index).setmult(true);
+						rls.get(index).selected.put(p3, main.getItemAtPosition(p3).toString());
+						AnimateUtil.playstart(rl);
+						p2.setBackgroundColor(Color.parseColor("#B2B2B2"));
+					}
+					
+						
+					// TODO: Implement this method
+					return true;
+				}
+			});
+		main.setOnItemClickListener(new OnItemClickListener(){
+
+				@Override
+				public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4)
+				{
+					if(rls.get(index).multi){
+						if(p2.getBackground()!=null){
+							rls.get(index).selected.remove(p3);
+							
+							p2.setBackground(null);
+						}else{
+							rls.get(index).selected.put(p3,main.getItemAtPosition(p3).toString());
+							
+							p2.setBackgroundColor(Color.parseColor("#B2B2B2"));
+						}
+						xpunt.setText(rls.get(index).selected.size()+"");
+						
+					}
+					// TODO: Implement this method
+				}
+			});
+		imgb_copy.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					if (rls.get(index).selected != null)
+					{
+						String t="";
+						for (int i=0;i < read.size();i++)
+						{
+							if (rls.get(index).selected.containsKey(i))
+							{
+								t = t + rls.get(index).selected.get(i).toString() + "\n";
+							}
+						}
+						copy(t, FloatService.this);
+						rls.get(index).selected.clear();
+						AnimateUtil.playEnd(rl);
+						rls.get(index).setmult(false);
+						lva.notifyDataSetChanged();
+						xpunt.setText("1");
+					}
+					// TODO: Implement this method
+				}
+			});
+		
+		imgb_share.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					if (rls.get(index).selected != null)
+					{
+						String t="";
+						for (int i=0;i < read.size();i++)
+						{
+							if (rls.get(index).selected.containsKey(i))
+							{
+								t = t + rls.get(index).selected.get(i).toString() + "\n";
+							}
+						}
+						Intent i=new Intent(Intent.ACTION_SEND);
+						i.setType("text/plain");
+						i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						i.putExtra(Intent.EXTRA_TEXT, t);
+						startActivity(i);
+						rls.get(index).selected.clear();
+						AnimateUtil.playEnd(rl);
+						rls.get(index).setmult(false);
+						lva.notifyDataSetChanged();
+						xpunt.setText("1");
+					}
+					// TODO: Implement this method
+				}
+			});
 		SeekBar sb=(SeekBar) root.findViewById(R.id.floatsideSeekBar1);
 		sb.setProgress((int)ll1.getAlpha()*100);
 		sb.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
@@ -183,7 +299,7 @@ public class FloatService extends Service
 				@Override
 				public void onClick(View p1)
 				{
-					wm.removeView(rls.get(index));
+					wm.removeView(rls.get(index).v);
 					// TODO: Implement this method
 				}
 			});
@@ -198,6 +314,16 @@ public class FloatService extends Service
 						ll1.setVisibility(View.GONE);
 					}
 					// TODO: Implement this method
+				}
+			});
+		imgb_tog.setOnLongClickListener(new OnLongClickListener(){
+
+				@Override
+				public boolean onLongClick(View p1)
+				{
+					wm.removeView(rls.get(index).v);
+					// TODO: Implement this method
+					return false;
 				}
 			});
 		imgb_side.setOnClickListener(new OnClickListener(){
@@ -231,10 +357,16 @@ public class FloatService extends Service
 					return false;
 				}
 			});	
-			rls.add(root);
+			rls.add(new Windows(root,false));
 		wm.addView(root,pa);
 		index_overall++;
 	}
+	public void copy(String content, Context context)  
+	{  
+
+		ClipboardManager cmb = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);  
+		cmb.setText(content.trim());  
+	}  
 	class Recgg extends BroadcastReceiver
 	{
 

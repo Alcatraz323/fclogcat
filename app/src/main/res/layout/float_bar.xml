@@ -6,30 +6,101 @@
 	android:orientation="horizontal"
 	android:background="@drawable/shader">
 
-	<RelativeLayout
-		android:layout_height="48dp"
-		android:layout_width="match_parent"
-		android:background="#656565"
-		android:gravity="left|center">
+	<FrameLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent">
 
-		<ImageButton
-			style="?android:attr/buttonBarButtonStyle"
-			android:layout_height="match_parent"
-			android:layout_width="wrap_content"
-			android:src="@drawable/ic_menu_white_18dp"
-			android:id="@+id/floatbarImageButton1"
-			android:scaleType="centerInside"/>
-
-		<TextView
-			android:layout_height="match_parent"
-			android:textAppearance="?android:attr/textAppearanceSmall"
+		<RelativeLayout
+			android:layout_height="48dp"
 			android:layout_width="match_parent"
-			android:layout_toRightOf="@id/floatbarImageButton1"
-			android:gravity="center"
-			android:id="@+id/floatbarTextView1"
-			android:textColor="#E7E7E7"/>
+			android:background="#656565"
+			android:gravity="left|center">
 
-	</RelativeLayout>
+			<ImageButton
+				style="?android:attr/buttonBarButtonStyle"
+				android:layout_height="match_parent"
+				android:layout_width="wrap_content"
+				android:src="@drawable/ic_menu_white_18dp"
+				android:id="@+id/floatbarImageButton1"
+				android:scaleType="centerInside"/>
+
+			<TextView
+				android:layout_height="match_parent"
+				android:textAppearance="?android:attr/textAppearanceSmall"
+				android:layout_width="match_parent"
+				android:layout_toRightOf="@id/floatbarImageButton1"
+				android:gravity="center"
+				android:id="@+id/floatbarTextView1"
+				android:textColor="#E7E7E7"/>
+
+		</RelativeLayout>
+
+		<RelativeLayout
+			android:layout_height="48dp"
+			android:layout_width="match_parent"
+			android:background="#656565"
+			android:gravity="left|center"
+			android:id="@+id/floatbarRelativeLayout1"
+			android:visibility="gone">
+
+			<ImageButton
+				style="?android:attr/buttonBarButtonStyle"
+				android:layout_height="match_parent"
+				android:layout_width="44dp"
+				android:src="@drawable/ic_arrow_left"
+				android:scaleType="fitCenter"
+				android:id="@+id/floatbarImageButton2"
+				android:scaleX="0.7"
+				android:scaleY="0.7"/>
+
+			<LinearLayout
+				android:layout_height="match_parent"
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:layout_toRightOf="@id/floatbarImageButton2"
+				android:gravity="right|center">
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceSmall"
+					android:layout_width="wrap_content"
+					android:textColor="#F0F0F0"
+					android:layout_marginRight="32dp"
+					android:id="@+id/floatbarTextView2"
+					android:text="1"/>
+
+				<ImageButton
+					style="?android:attr/buttonBarButtonStyle"
+					android:layout_height="match_parent"
+					android:layout_width="44dp"
+					android:src="@drawable/ic_content_copy_white_18dp"
+					android:scaleType="centerInside"
+					android:id="@+id/floatbarImageButton5"/>
+
+				<ImageButton
+					style="?android:attr/buttonBarButtonStyle"
+					android:layout_height="match_parent"
+					android:layout_width="40dp"
+					android:src="@drawable/ic_share_variant_white_24dp"
+					android:scaleType="centerInside"
+					android:id="@+id/floatbarImageButton4"/>
+
+				<ImageButton
+					style="?android:attr/buttonBarButtonStyle"
+					android:layout_height="match_parent"
+					android:layout_width="44dp"
+					android:src="@drawable/ic_sort"
+					android:scaleType="centerInside"
+					android:id="@+id/floatbarImageButton3"
+					android:scaleX="0.8"
+					android:scaleY="0.8"
+					android:visibility="gone"/>
+
+			</LinearLayout>
+
+		</RelativeLayout>
+
+	</FrameLayout>
 
 </LinearLayout>
 

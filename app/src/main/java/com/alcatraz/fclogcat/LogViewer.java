@@ -369,6 +369,7 @@ public class LogViewer extends ThemedActivity
 	public void initData()
 	{
 		keyline = new ArrayList<String>();
+		if(path!=null){
 		File f=new File(path);
 		try
 		{
@@ -424,13 +425,15 @@ public class LogViewer extends ThemedActivity
 					}
 				}
 				fis.close();
+			}else{
+				Toast.makeText(LogViewer.this,R.string.path_null,Toast.LENGTH_SHORT).show();
 			}
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-
+}
 	}
 	public void getData(Intent i)
 	{

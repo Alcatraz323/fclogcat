@@ -50,6 +50,7 @@ public class BackGroundCatcher extends Service
 	boolean clean_up;
 	boolean stic_noti;
 	boolean single_noti;
+	boolean show_direct;
 	boolean no_hover;
 	boolean empty_panel;
 	@Override
@@ -65,6 +66,7 @@ public class BackGroundCatcher extends Service
 		single_noti = spf.getBoolean("single_noti", false);
 		clean_up=spf.getBoolean("clean_up",false);
 		filt=spf.getString("filt","");
+		show_direct=spf.getBoolean("show_direct",false);
 		no_hover=spf.getBoolean("no_hover",false);
 		empty_panel=spf.getBoolean("empty_panel",false);
 		location=spf.getString("location",SpfConstants.getDefaultStoragePosition());
@@ -315,6 +317,9 @@ public class BackGroundCatcher extends Service
 				}
 				if(!empty_panel){
 					nb.setContentIntent(pendingIntent);
+				}
+				if(show_direct&&no_hover){
+					sendBroadcast(ijj);
 				}
 			Notification n=nb.build();
 			manager.notify(id, n);

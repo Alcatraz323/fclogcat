@@ -116,6 +116,7 @@ public class SetupWizard extends AppCompatActivity
 		edit.putBoolean("ce", false);
 		edit.putBoolean("clean_up", true);
 		edit.putBoolean("boot", true);
+		edit.putBoolean("show_direct",false);
 		edit.putString("location",SpfConstants.getDefaultStoragePosition());
 		edit.putString("hb", "#9fa8da");
 		edit.putStringSet("hldb", SpfConstants.getDefSet());

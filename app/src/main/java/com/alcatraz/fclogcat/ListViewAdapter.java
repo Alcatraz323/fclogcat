@@ -108,7 +108,9 @@ public class ListViewAdapter extends BaseAdapter
 	} 
 	public void updateBackGround(int position, View v)
 	{
+		Log.e("Alcn","item"+lv.isItemChecked(position));
 		if(lv.isItemChecked(position)){
+			
 			v.setBackgroundColor(Color.parseColor("#E0E0E0"));
 		}else{
 			v.setBackground(null);
